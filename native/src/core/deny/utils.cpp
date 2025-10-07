@@ -19,7 +19,6 @@ atomic_flag skip_pkg_rescan;
 
 atomic_flag *p_skip_pkg_rescan = &skip_pkg_rescan;
 
-bool sulist_enabled = false;
 static const char *table_name = "hidelist";
 
 // For the following data structures:
