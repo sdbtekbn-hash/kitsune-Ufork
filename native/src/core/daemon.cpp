@@ -20,6 +20,10 @@ static map<int, poll_callback> *poll_map;
 static vector<pollfd> *poll_fds;
 static int poll_ctrl;
 
+int magisktmpfs_fd = -1;
+bool HAVE_32 = false;
+bool logging_muted = false;
+
 enum {
     POLL_CTRL_NEW,
     POLL_CTRL_RM,

@@ -20,6 +20,7 @@ LOCAL_SRC_FILES := \
     core/daemon.cpp \
     core/scripting.cpp \
     core/sqlite.cpp \
+    core/db.cpp \
     core/module.cpp \
     core/thread.cpp \
     core/core-rs.cpp \
@@ -34,7 +35,8 @@ LOCAL_SRC_FILES := \
     core/deny/utils.cpp \
     core/deny/ptrace.cpp \
     core/deny/revert.cpp \
-    core/deny/logcat.cpp
+    core/deny/logcat.cpp \
+    core/deny_wrappers.cpp
 
 LOCAL_LDLIBS := -llog
 LOCAL_LDFLAGS := -Wl,--dynamic-list=src/exported_sym.txt
