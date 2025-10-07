@@ -13,6 +13,8 @@ import io.github.huskydg.magisk.core.data.magiskdb.StringDao
 import io.github.huskydg.magisk.core.ktx.deviceProtectedContext
 import io.github.huskydg.magisk.core.repository.LogRepository
 import io.github.huskydg.magisk.core.repository.NetworkService
+import io.github.huskydg.magisk.core.tasks.RepoUpdater
+import io.github.huskydg.magisk.data.database.RepoDatabase
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 
@@ -28,6 +30,9 @@ object ServiceLocator {
     val stringDB = StringDao()
     val sulogDB by lazy { createSuLogDatabase(deContext).suLogDao() }
     val logRepo by lazy { LogRepository(sulogDB) }
+    val repoDB by lazy { RepoDatabase.getInstance() }
+    val repoDao by lazy { repoDB.repoDao() }
+    val blacklistDao by lazy { repoDB.blacklistDao() }
 
     // Networking
     val okhttp by lazy { createOkHttpClient(AppContext) }
@@ -39,6 +44,9 @@ object ServiceLocator {
             createApiService(retrofit, Const.Url.GITHUB_RAW_URL),
         )
     }
+    
+    // Tasks
+    val repoUpdater by lazy { RepoUpdater(networkService, repoDao) }
 }
 
 private fun createSuLogDatabase(context: Context) =

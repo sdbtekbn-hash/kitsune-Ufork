@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application android:localeConfig="@xml/locale_config">
         <activity
             android:name=".ui.MainActivity"
@@ -28,6 +33,20 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+    <activity
+        android:name=".ui.modulerepo.ModuleRepoActivity"
+        android:exported="false" />
+    
+    <activity
+        android:name=".ui.webui.WebUIActivity"
+        android:exported="false"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+    
+    <service
+        android:name="io.github.huskydg.magisk.core.service.WebUIService"
+        android:enabled="true"
+        android:exported="false" />
     </application>
 
 </manifest>

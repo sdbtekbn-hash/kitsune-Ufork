@@ -9,6 +9,7 @@ import com.topjohnwu.superuser.nio.ExtendedFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
 import java.io.IOException
 import java.util.Locale
 
@@ -26,6 +27,23 @@ data class LocalModule(
     var updateInfo: OnlineModule? = null
     var outdated = false
     private var updateUrl: String = ""
+    
+    // Enhanced fields for local modules
+    var icon: String? = null
+    var cover: String? = null
+    var screenshots: List<String>? = null
+    var homepage: String? = null
+    var donate: String? = null
+    var support: String? = null
+    var license: String? = null
+    var readme: String? = null
+    var categories: List<String>? = null
+    var verified: Boolean? = null
+    
+    // WebUI support
+    var webuiPort: Int = 8080
+    var webuiPath: String = "/"
+    var webuiEnabled: Boolean = true
 
     private val removeFile = base.getChildFile("remove")
     private val disableFile = base.getChildFile("disable")
@@ -37,6 +55,39 @@ data class LocalModule(
     val isZygisk = zygiskFolder.exists()
     val zygiskUnloaded = zygiskFolder.getChildFile("unloaded").exists()
     val hasAction = base.getChildFile("action.sh").exists()
+    
+    // Enhanced properties for local modules
+    val hasIcon get() = !icon.isNullOrBlank() || base.getChildFile("icon.png").exists()
+    val hasCover get() = !cover.isNullOrBlank() || base.getChildFile("cover.png").exists()
+    val hasScreenshots get() = !screenshots.isNullOrEmpty() || base.getChildFile("screenshots").exists()
+    val hasHomepage get() = !homepage.isNullOrBlank()
+    val hasDonate get() = !donate.isNullOrBlank()
+    val hasSupport get() = !support.isNullOrBlank()
+    val hasLicense get() = !license.isNullOrBlank() && license != "UNKNOWN"
+    val hasReadme get() = !readme.isNullOrBlank() || base.getChildFile("README.md").exists()
+    val hasCategories get() = !categories.isNullOrEmpty()
+    val isVerified get() = verified == true
+    
+    // Get local icon path
+    val localIconPath get() = if (base.getChildFile("icon.png").exists()) {
+        base.getChildFile("icon.png").absolutePath
+    } else null
+    
+    // Get local cover path
+    val localCoverPath get() = if (base.getChildFile("cover.png").exists()) {
+        base.getChildFile("cover.png").absolutePath
+    } else null
+    
+    // Get local screenshots
+    val localScreenshots get() = base.getChildFile("screenshots")
+        .listFiles()
+        .orEmpty()
+        .filter { it.isFile && it.name.endsWith(".png", ignoreCase = true) }
+        .map { it.absolutePath }
+    
+    // WebUI properties
+    val hasWebUI get() = webuiEnabled && File(base, "webui.sh").exists()
+    val webuiScriptPath get() = File(base, "webui.sh").absolutePath
 
     var enable: Boolean
         get() = !disableFile.exists()
@@ -83,6 +134,18 @@ data class LocalModule(
                 "author" -> author = value
                 "description" -> description = value
                 "updateJson" -> updateUrl = value
+                "icon" -> icon = value
+                "cover" -> cover = value
+                "homepage" -> homepage = value
+                "donate" -> donate = value
+                "support" -> support = value
+                "license" -> license = value
+                "readme" -> readme = value
+                "verified" -> verified = value.toBoolean()
+                "categories" -> categories = value.split(",").map { it.trim() }
+                "webui_port" -> webuiPort = value.toIntOrNull() ?: 8080
+                "webui_path" -> webuiPath = value
+                "webui_enabled" -> webuiEnabled = value.toBoolean()
             }
         }
     }

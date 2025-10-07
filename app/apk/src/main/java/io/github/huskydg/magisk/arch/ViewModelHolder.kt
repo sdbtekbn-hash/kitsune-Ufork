@@ -9,6 +9,7 @@ import io.github.huskydg.magisk.core.di.ServiceLocator
 import io.github.huskydg.magisk.ui.home.HomeViewModel
 import io.github.huskydg.magisk.ui.install.InstallViewModel
 import io.github.huskydg.magisk.ui.log.LogViewModel
+import io.github.huskydg.magisk.ui.modulerepo.ModuleRepoViewModel
 import io.github.huskydg.magisk.ui.superuser.SuperuserViewModel
 import io.github.huskydg.magisk.ui.surequest.SuRequestViewModel
 
@@ -38,6 +39,8 @@ object VMFactory : ViewModelProvider.Factory {
                 InstallViewModel(ServiceLocator.networkService, ServiceLocator.markwon)
             SuRequestViewModel::class.java ->
                 SuRequestViewModel(ServiceLocator.policyDB, ServiceLocator.timeoutPrefs)
+            ModuleRepoViewModel::class.java ->
+                ModuleRepoViewModel(ServiceLocator.repoDao, ServiceLocator.repoUpdater)
             else -> modelClass.newInstance()
         } as T
     }

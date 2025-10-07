@@ -457,7 +457,7 @@ int enable_deny() {
         }
 
         if (procfp == nullptr && (procfp = opendir("/proc")) == nullptr)
-            goto daemon_error;
+            return DenyResponse::ERROR;
 
         if (sulist_enabled) {
             LOGI("* Enable SuList\n");
@@ -465,12 +465,12 @@ int enable_deny() {
             LOGI("* Enable MagiskHide\n");
         }
 
+        if (!ensure_data())
+            return DenyResponse::ERROR;
+
         denylist_enforced = true;
 
-        if (!ensure_data()) {
-            denylist_enforced = false;
-            goto daemon_error;
-        }
+        // Use proc_monitor for MagiskHide/SuList functionality
         if (new_daemon_thread(&proc_monitor)){
             denylist_enforced = false;
             LOGE("proc_monitor: Failed to create thread\n");
@@ -483,17 +483,18 @@ int enable_deny() {
             add_hide_set("com.android.settings", "com.android.settings");
             add_hide_set(JAVA_PACKAGE_NAME, JAVA_PACKAGE_NAME);
         }
+
+        // On Android Q+, also kill blastula pool and all app zygotes
+        if (SDK_INT >= 29) {
+            kill_process("usap32", true);
+            kill_process("usap64", true);
+            kill_process<&proc_context_match>("u:r:app_zygote:s0", true);
+        }
     }
 
     update_deny_config();
 
     return DenyResponse::OK;
-
-    daemon_error:
-    sulist_enabled = false;
-    table_name = "hidelist";
-    update_sulist_config(false);
-    return DenyResponse::ERROR;
 }
 
 int disable_deny() {

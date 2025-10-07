@@ -256,6 +256,7 @@ impl MagiskD {
             DbEntryKey::DenylistConfig => 0,
             DbEntryKey::ZygiskConfig => self.is_emulator as i32,
             DbEntryKey::BootloopCount => 0,
+            DbEntryKey::SulistConfig => 0,
             _ => -1,
         };
         let mut func = |_: &[String], values: &DbValues| {

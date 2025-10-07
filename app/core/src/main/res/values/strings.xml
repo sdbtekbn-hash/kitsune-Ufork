@@ -259,4 +259,41 @@
     <string name="reboot_apply_change">Reboot to apply changes</string>
     <string name="restore_app_confirmation">This will restore the hidden app back to the original app. Do you really want to do this?</string>
 
+    <!--Module Repository-->
+    <string name="module_repo">Module Repository</string>
+    <string name="module_repo_search_title">Search Online Modules</string>
+    <string name="module_repo_search_hint">Search modules…</string>
+    <string name="module_repo_refresh">Refresh</string>
+    <string name="module_repo_version">v%1$s by %2$s</string>
+    <string name="module_repo_last_update">Updated: %1$s</string>
+    <string name="download">Download</string>
+    
+    <!--Module Enhanced-->
+    <string name="module_icon">Module Icon</string>
+    <string name="module_cover">Module Cover</string>
+    <string name="verified_module">Verified Module</string>
+    <string name="module_categories">Categories</string>
+    <string name="module_homepage">Homepage</string>
+    <string name="module_donate">Donate</string>
+    <string name="module_support">Support</string>
+    <string name="module_license">License</string>
+    <string name="module_readme">Readme</string>
+    <string name="module_screenshots">Screenshots</string>
+    <string name="module_size">Size</string>
+    <string name="module_verified">Verified</string>
+    
+    <!--WebUI-->
+    <string name="webui">WebUI</string>
+    <string name="webui_open">Open WebUI</string>
+    <string name="webui_fullscreen">Fullscreen</string>
+    <string name="webui_error_loading">Failed to load WebUI</string>
+    <string name="webui_session_started">WebUI session started</string>
+    <string name="webui_session_stopped">WebUI session stopped</string>
+    <string name="webui_module_not_supported">This module does not support WebUI</string>
+    <string name="webui_port">Port</string>
+    <string name="webui_path">Path</string>
+    <string name="webui_enabled">WebUI Enabled</string>
+    <string name="webui_auto_start">Auto Start</string>
+    <string name="retry">Retry</string>
+
 </resources>

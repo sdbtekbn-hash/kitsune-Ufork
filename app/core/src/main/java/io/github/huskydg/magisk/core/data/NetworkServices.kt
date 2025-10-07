@@ -2,6 +2,7 @@ package io.github.huskydg.magisk.core.data
 
 import io.github.huskydg.magisk.core.model.BranchInfo
 import io.github.huskydg.magisk.core.model.ModuleJson
+import io.github.huskydg.magisk.core.model.RepoJson
 import io.github.huskydg.magisk.core.model.UpdateInfo
 import okhttp3.ResponseBody
 import retrofit2.http.GET
@@ -32,6 +33,8 @@ interface RawServices {
     @GET
     suspend fun fetchModuleJson(@Url url: String): ModuleJson
 
+    @GET
+    suspend fun fetchRepoInfo(@Url url: String): RepoJson
 }
 
 interface GithubApiServices {

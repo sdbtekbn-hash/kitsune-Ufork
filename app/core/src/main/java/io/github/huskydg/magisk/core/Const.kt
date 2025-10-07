@@ -50,6 +50,10 @@ object Const {
         const val GITHUB_API_URL = "https://api.github.com/"
         const val GITHUB_PAGE_URL = "https://topjohnwu.github.io/magisk-files/"
         const val JS_DELIVR_URL = "https://cdn.jsdelivr.net/gh/"
+        
+        // Module Repositories
+        const val OFFICIAL_REPO = "https://magisk-modules-repo.github.io/submission/modules.json"
+        const val MMRL_REPO = "https://gr.dergoogler.com/gmr/"
     }
 
     object Key {

@@ -62,6 +62,11 @@ class NetworkService(
         }
     }
 
+    // Modules related
+    suspend fun fetchRepoInfo(url: String = io.github.huskydg.magisk.core.Const.Url.OFFICIAL_REPO) = safe {
+        raw.fetchRepoInfo(url)
+    }
+
     // Fetch files
     suspend fun fetchFile(url: String) = wrap { raw.fetchFile(url) }
     suspend fun fetchString(url: String) = wrap { raw.fetchString(url) }

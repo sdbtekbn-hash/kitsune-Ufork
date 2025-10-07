@@ -25,6 +25,7 @@ object Config : PreferenceConfig, DBConfig {
         const val BOOTLOOP = "bootloop"
         const val SU_MANAGER = "requester"
         const val KEYSTORE = "keystore"
+        const val SULIST = "sulist"
 
         // prefs
         const val SU_REQUEST_TIMEOUT = "su_request_timeout"
@@ -84,6 +85,10 @@ object Config : PreferenceConfig, DBConfig {
 
         // su timeout
         val TIMEOUT_LIST = longArrayOf(0, -1, 10, 20, 30, 60)
+        
+        // repo order
+        const val ORDER_NAME = 0
+        const val ORDER_DATE = 1
     }
 
     private val defaultChannel =
@@ -98,10 +103,10 @@ object Config : PreferenceConfig, DBConfig {
     @JvmField var keepEnc = false
     @JvmField var recovery = false
     var denyList = false
-    var sulist = false
 
     var askedHome by preference(Key.ASKED_HOME, false)
     var bootloop by dbSettings(Key.BOOTLOOP, 0)
+    var sulist by dbSettings(Key.SULIST, false)
 
     var safetyNotice by preference(Key.SAFETY, true)
     var darkTheme by preference(Key.DARK_THEME, -1)
@@ -114,6 +119,7 @@ object Config : PreferenceConfig, DBConfig {
     var customChannelUrl by preference(Key.CUSTOM_CHANNEL, "")
     var downloadDir by preference(Key.DOWNLOAD_DIR, "")
     var randName by preference(Key.RAND_NAME, true)
+    var repoOrder by preference("repoOrder", Value.ORDER_DATE)
     var checkUpdate
         get() = checkUpdatePrefs
         set(value) {

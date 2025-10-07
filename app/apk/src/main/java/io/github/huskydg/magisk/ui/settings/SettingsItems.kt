@@ -263,16 +263,8 @@ object SuList : BaseSettingsItem.Toggle() {
     override var value = Config.sulist
         set(value) {
             field = value
-            val cmd = if (value) "1" else "0"
-            Shell.cmd("magisk --sqlite \"REPLACE INTO settings (key,value) VALUES('sulist',$cmd);\"").submit { result ->
-                if (result.isSuccess) {
-                    Config.sulist = value
-                    notifyPropertyChanged(BR.description)
-                } else {
-                    field = !value
-                    notifyPropertyChanged(BR.checked)
-                }
-            }
+            Config.sulist = value
+            notifyPropertyChanged(BR.description)
         }
 
     override fun refresh() {

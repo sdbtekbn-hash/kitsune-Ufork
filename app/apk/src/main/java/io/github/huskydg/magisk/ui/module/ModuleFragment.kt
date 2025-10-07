@@ -38,6 +38,12 @@ class ModuleFragment : BaseFragment<FragmentModuleMd2Binding>() {
             fixEdgeEffect()
             post { addInvalidateItemDecorationsObserver() }
         }
+
+        binding.moduleRepoFab.setOnClickListener {
+            val intent = android.content.Intent(requireContext(), 
+                io.github.huskydg.magisk.ui.modulerepo.ModuleRepoActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onPreBind(binding: FragmentModuleMd2Binding) = Unit

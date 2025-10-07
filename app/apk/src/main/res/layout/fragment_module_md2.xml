@@ -11,7 +11,7 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -59,7 +59,17 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-    </FrameLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/module_repo_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/l1"
+            android:contentDescription="@string/module_repo"
+            app:srcCompat="@drawable/ic_search"
+            app:fitsSystemWindowsInsets="bottom|end" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </layout>

@@ -35,3 +35,18 @@ data class CommitInfo(
 data class BranchInfo(
     val commit: CommitInfo
 )
+
+// Repo JSON structures
+@JsonClass(generateAdapter = true)
+data class RepoJson(
+    val modules: List<RepoModuleInfo>
+)
+
+@JsonClass(generateAdapter = true)
+data class RepoModuleInfo(
+    val id: String,
+    val last_update: Long,
+    val prop_url: String,
+    val zip_url: String,
+    val notes_url: String
+)
