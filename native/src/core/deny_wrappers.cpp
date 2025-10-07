@@ -34,12 +34,3 @@ vector<mount_info> parse_mount_info(const char *pid) {
     return vector<mount_info>();
 }
 
-// SELinux wrappers
-int setfilecon(const char *path, const char *con) {
-    return lsetfilecon(path, con);
-}
-
-bool selinux_enabled() {
-    return getfilecon != nullptr;
-}
-
