@@ -67,7 +67,7 @@ void rescan_apps() {
             while ((entry = xreaddir(dir.get()))) {
                 struct stat st{};
                 // For each package
-                if (xfstatat(dfd, entry->d_name, &st, 0))
+                if (fstatat(dfd, entry->d_name, &st, 0))
                     continue;
                 int app_id = to_app_id(st.st_uid);
                 if (auto it = pkg_to_procs.find(entry->d_name); it != pkg_to_procs.end()) {
@@ -286,7 +286,7 @@ static int add_list(const char *pkg, const char *proc) {
     char sql[4096];
     ssprintf(sql, sizeof(sql),
             "INSERT INTO %s (package_name, process) VALUES('%s', '%s')", table_name, pkg, proc);
-    char *err = db_exec(sql);
+    char *err = db_exec_impl(sql);
     db_err_cmd(err, return DenyResponse::ERROR)
     return DenyResponse::OK;
 }
@@ -332,7 +332,7 @@ static int rm_list(const char *pkg, const char *proc) {
     else
         ssprintf(sql, sizeof(sql),
                 "DELETE FROM %s WHERE package_name='%s' AND process='%s'", table_name, pkg, proc);
-    char *err = db_exec(sql);
+    char *err = db_exec_impl(sql);
     db_err_cmd(err, return DenyResponse::ERROR)
     return DenyResponse::OK;
 }
@@ -395,7 +395,7 @@ void ls_list(int client) {
                 LOGI("%s rm: [%s]\n", table_name, pkg.data());
             }
             ssprintf(sql, sizeof(sql), "DELETE FROM %s WHERE package_name='%s'", table_name, pkg.data());
-            db_exec(sql);
+            db_exec_impl(sql);
         }
     
         if (auto it = pkg_to_procs.find(ISOLATED_MAGIC); it != pkg_to_procs.end()) {
@@ -408,7 +408,7 @@ void ls_list(int client) {
                 }
                 ssprintf(sql, sizeof(sql),
                     "DELETE FROM %s WHERE package_name='%s' AND process='%s'", table_name, ISOLATED_MAGIC, proc.data());
-                db_exec(sql);
+                db_exec_impl(sql);
             }
         }
 
@@ -431,7 +431,7 @@ static void update_deny_config() {
     char sql[64];
     sprintf(sql, "REPLACE INTO settings (key,value) VALUES('%s',%d)",
         DB_SETTING_KEYS[DENYLIST_CONFIG], denylist_enforced.load());
-    char *err = db_exec(sql);
+    char *err = db_exec_impl(sql);
     db_err(err);
 }
 
@@ -439,7 +439,7 @@ void update_sulist_config(bool enable) {
     char sql[64];
     sprintf(sql, "REPLACE INTO settings (key,value) VALUES('%s',%d)",
         DB_SETTING_KEYS[SULIST_CONFIG], enable? 1 : 0);
-    char *err = db_exec(sql);
+    char *err = db_exec_impl(sql);
     db_err(err);
 }
 

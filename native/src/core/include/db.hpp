@@ -138,8 +138,9 @@ int get_db_settings(db_settings &cfg, int key = -1);
 int get_db_strings(db_strings &str, int key = -1);
 void rm_db_strings(int key);
 void exec_sql(int client);
-char *db_exec(const char *sql);
-char *db_exec(const char *sql, const db_row_cb &fn);
+int get_manager(int user_id = 0, std::string *pkg = nullptr, bool install = false);
+char *db_exec_impl(const char *sql);
+char *db_exec_impl(const char *sql, const db_row_cb &fn);
 bool db_err(char *e);
 
 #define db_err_cmd(e, cmd) if (db_err(e)) { cmd; }

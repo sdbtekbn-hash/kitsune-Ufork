@@ -108,6 +108,7 @@ void clear_pkg(const char *pkg, int user_id);
 // Denylist
 extern std::atomic<bool> denylist_enforced;
 extern bool sulist_enabled;
+extern pthread_t monitor_thread;
 int denylist_cli(int argc, char **argv);
 void initialize_denylist();
 void scan_deny_apps();
