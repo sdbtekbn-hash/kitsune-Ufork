@@ -782,8 +782,9 @@ void repack(const char *src_img, const char *out_img, bool skip_comp) {
             } else {
                 ssprintf(file_name, sizeof(file_name), "%s.cpio", it.ramdisk_name);
             }
-            auto path = fd_path(dirfd, file_name);
-            mmap_data m(path.data());
+            char path_buf[PATH_MAX];
+            fd_path(dirfd, rust::Slice<uint8_t>((uint8_t*)path_buf, sizeof(path_buf)));
+            mmap_data m(path_buf);
             format_t fmt = check_fmt_lg(boot.ramdisk + it.ramdisk_offset, it.ramdisk_size);
             it.ramdisk_offset = ramdisk_offset;
             if (!skip_comp && !COMPRESSED_ANY(check_fmt(m.buf(), m.sz())) && COMPRESSED(fmt)) {
