@@ -22,6 +22,9 @@
 #define SHELLPTS      INTLROOT "/pts"
 #define MAIN_CONFIG   INTLROOT "/config"
 #define MAIN_SOCKET   DEVICEDIR "/socket"
+#define EARLYMNT      INTLROOT "/early-mount.d"
+
+#define EARLYMNTNAME  "early-mount.d/v2"
 
 constexpr const char *applet_names[] = { "su", "resetprop", nullptr };
 

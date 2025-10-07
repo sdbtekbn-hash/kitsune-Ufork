@@ -214,7 +214,7 @@ void revert_daemon(int pid, int client) {
     }
 }
 
-void revert_unmount(int pid) {
+void revert_unmount(int pid) noexcept {
     if (pid > 0) {
         if (switch_mnt_ns(pid))
             return;
