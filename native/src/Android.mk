@@ -23,6 +23,7 @@ LOCAL_SRC_FILES := \
     core/module.cpp \
     core/thread.cpp \
     core/core-rs.cpp \
+    core/deny_globals.cpp \
     core/resetprop/resetprop.cpp \
     core/su/su.cpp \
     core/su/connect.cpp \
@@ -31,6 +32,8 @@ LOCAL_SRC_FILES := \
     core/zygisk/hook.cpp \
     core/deny/cli.cpp \
     core/deny/utils.cpp \
+    core/deny/ptrace.cpp \
+    core/deny/revert.cpp \
     core/deny/logcat.cpp
 
 LOCAL_LDLIBS := -llog
