@@ -1,5 +1,5 @@
 // IRootUtils.aidl
-package com.topjohnwu.magisk.core.utils;
+package io.github.huskydg.magisk.core.utils;
 
 // Declare any non-default types here with import statements
 
