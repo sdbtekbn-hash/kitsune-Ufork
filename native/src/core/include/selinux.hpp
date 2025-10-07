@@ -12,6 +12,7 @@ int fsetfilecon(int fd, const char *con);
 int getfilecon_at(int dirfd, const char *name, byte_data con);
 void setfilecon_at(int dirfd, const char *name, const char *con);
 
-void restorecon();
+bool selinux_enabled();
+void restorecon() noexcept;
 void restore_tmpcon();
 

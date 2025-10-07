@@ -249,7 +249,7 @@ static bool ensure_data() {
 
     default_new(pkg_to_procs_);
     string select_from_cmd = string("SELECT * FROM ") + table_name;
-    char *err = db_exec(select_from_cmd.data(), [](db_row &row) -> bool {
+    char *err = db_exec_impl(select_from_cmd.data(), [](db_row &row) -> bool {
         add_hide_set(row["package_name"].data(), row["process"].data());
         return true;
     });
