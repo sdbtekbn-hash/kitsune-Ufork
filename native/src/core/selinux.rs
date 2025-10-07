@@ -114,9 +114,11 @@ pub extern "C" fn setfilecon_impl(path: *const libc::c_char, con: *const libc::c
         return false;
     }
     unsafe {
-        let path = Utf8CStr::from_ptr(path);
-        let con = Utf8CStr::from_ptr(con);
-        setfilecon(path, con)
+        if let (Ok(path), Ok(con)) = (Utf8CStr::from_ptr(path), Utf8CStr::from_ptr(con)) {
+            setfilecon(path, con)
+        } else {
+            false
+        }
     }
 }
 
@@ -126,9 +128,11 @@ pub extern "C" fn lsetfilecon_impl(path: *const libc::c_char, con: *const libc::
         return false;
     }
     unsafe {
-        let path = Utf8CStr::from_ptr(path);
-        let con = Utf8CStr::from_ptr(con);
-        lsetfilecon(path, con)
+        if let (Ok(path), Ok(con)) = (Utf8CStr::from_ptr(path), Utf8CStr::from_ptr(con)) {
+            lsetfilecon(path, con)
+        } else {
+            false
+        }
     }
 }
 
@@ -139,12 +143,15 @@ pub extern "C" fn fsetfilecon_impl(fd: libc::c_int, con: *const libc::c_char) ->
     }
     unsafe {
         use base::cstr;
-        let con = Utf8CStr::from_ptr(con);
-        // Use procfs to set context on file descriptor
-        let mut path = cstr::buf::default();
-        path.push_str("/proc/self/fd/");
-        path.push_str(&fd.to_string());
-        path.set_secontext(con).is_ok()
+        if let Ok(con) = Utf8CStr::from_ptr(con) {
+            // Use procfs to set context on file descriptor
+            let mut path = cstr::buf::default();
+            path.push_str("/proc/self/fd/");
+            path.push_str(&fd.to_string());
+            path.set_secontext(con).is_ok()
+        } else {
+            false
+        }
     }
 }
 
