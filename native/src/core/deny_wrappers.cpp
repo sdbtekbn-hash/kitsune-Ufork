@@ -19,8 +19,12 @@ void su_mount() {
     // Placeholder - calls Rust implementation through FFI
 }
 
+// Forward declaration from Rust
+extern "C" int get_manager_uid_impl(int user_id);
+
 int get_manager(int user_id, string *pkg, bool install) {
-    // Call Rust implementation through the daemon
-    return MagiskD::get()->get_manager(user_id, install).first;
+    // Simple implementation - just return -1 for now
+    // This will be properly implemented when we integrate with Rust
+    return -1;
 }
 
