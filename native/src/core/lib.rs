@@ -14,7 +14,7 @@ use cxx::{ExternType, type_id};
 use daemon::{MagiskD, daemon_entry};
 use derive::Decodable;
 use logging::{android_logging, setup_logfile, zygisk_close_logd, zygisk_get_logd, zygisk_logging};
-use mount::{find_preinit_device, revert_unmount};
+use mount::find_preinit_device;
 use resetprop::{persist_delete_prop, persist_get_prop, persist_get_props, persist_set_prop};
 use selinux::{lgetfilecon, lsetfilecon, restorecon, setfilecon};
 use socket::{recv_fd, recv_fds, send_fd, send_fds};
