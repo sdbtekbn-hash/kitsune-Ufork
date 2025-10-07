@@ -106,3 +106,50 @@ pub(crate) fn setfilecon(path: &Utf8CStr, con: &Utf8CStr) -> bool {
 pub(crate) fn lsetfilecon(path: &Utf8CStr, con: &Utf8CStr) -> bool {
     path.set_secontext(con).is_ok()
 }
+
+// Export C-compatible wrappers for deny system
+#[no_mangle]
+pub extern "C" fn setfilecon_impl(path: *const libc::c_char, con: *const libc::c_char) -> bool {
+    if path.is_null() || con.is_null() {
+        return false;
+    }
+    unsafe {
+        let path = Utf8CStr::from_ptr(path);
+        let con = Utf8CStr::from_ptr(con);
+        setfilecon(path, con)
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn lsetfilecon_impl(path: *const libc::c_char, con: *const libc::c_char) -> bool {
+    if path.is_null() || con.is_null() {
+        return false;
+    }
+    unsafe {
+        let path = Utf8CStr::from_ptr(path);
+        let con = Utf8CStr::from_ptr(con);
+        lsetfilecon(path, con)
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn fsetfilecon_impl(fd: libc::c_int, con: *const libc::c_char) -> bool {
+    if con.is_null() {
+        return false;
+    }
+    unsafe {
+        use std::os::unix::io::RawFd;
+        let con = Utf8CStr::from_ptr(con);
+        use base::FsPath;
+        (fd as RawFd).set_secontext(con).is_ok()
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn selinux_enabled_impl() -> bool {
+    use base::libc::access;
+    use base::libc::F_OK;
+    unsafe {
+        access(cstr!("/sys/fs/selinux").as_ptr(), F_OK) == 0
+    }
+}

@@ -34,3 +34,30 @@ vector<mount_info> parse_mount_info(const char *pid) {
     return vector<mount_info>();
 }
 
+// SELinux wrappers - these are defined in Rust via FFI
+// We need to declare them as extern "C" to avoid name mangling issues
+extern "C" {
+    bool setfilecon_impl(const char *path, const char *con);
+    bool lsetfilecon_impl(const char *path, const char *con);
+    bool fsetfilecon_impl(int fd, const char *con);
+    bool selinux_enabled_impl();
+}
+
+// C++ wrappers that call Rust implementations
+int setfilecon(const char *path, const char *con) {
+    // Rust returns bool, C++ expects int (0 = success, -1 = error)
+    return setfilecon_impl(path, con) ? 0 : -1;
+}
+
+int lsetfilecon(const char *path, const char *con) {
+    return lsetfilecon_impl(path, con) ? 0 : -1;
+}
+
+int fsetfilecon(int fd, const char *con) {
+    return fsetfilecon_impl(fd, con) ? 0 : -1;
+}
+
+bool selinux_enabled() {
+    return selinux_enabled_impl();
+}
+
