@@ -472,6 +472,8 @@ int enable_deny() {
             goto daemon_error;
         }
         if (new_daemon_thread(&proc_monitor)){
+            denylist_enforced = false;
+            LOGE("proc_monitor: Failed to create thread\n");
             return DenyResponse::ERROR;
         }
 
