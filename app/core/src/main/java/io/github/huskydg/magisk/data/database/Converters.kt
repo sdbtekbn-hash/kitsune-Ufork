@@ -1,8 +1,8 @@
 package io.github.huskydg.magisk.data.database
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 
 /**
  * Type converters for Room database
@@ -10,31 +10,45 @@ import com.google.gson.reflect.TypeToken
  */
 class Converters {
     
-    private val gson = Gson()
+    private val moshi = Moshi.Builder().build()
     
     @TypeConverter
     fun fromStringList(value: List<String>?): String? {
-        return value?.let { gson.toJson(it) }
+        return value?.let { 
+            val adapter = moshi.adapter<List<String>>(
+                Types.newParameterizedType(List::class.java, String::class.java)
+            )
+            adapter.toJson(it)
+        }
     }
     
     @TypeConverter
     fun toStringList(value: String?): List<String>? {
         return value?.let {
-            val listType = object : TypeToken<List<String>>() {}.type
-            gson.fromJson(it, listType)
+            val adapter = moshi.adapter<List<String>>(
+                Types.newParameterizedType(List::class.java, String::class.java)
+            )
+            adapter.fromJson(it)
         }
     }
     
     @TypeConverter
     fun fromStringMap(value: Map<String, String>?): String? {
-        return value?.let { gson.toJson(it) }
+        return value?.let {
+            val adapter = moshi.adapter<Map<String, String>>(
+                Types.newParameterizedType(Map::class.java, String::class.java, String::class.java)
+            )
+            adapter.toJson(it)
+        }
     }
     
     @TypeConverter
     fun toStringMap(value: String?): Map<String, String>? {
         return value?.let {
-            val mapType = object : TypeToken<Map<String, String>>() {}.type
-            gson.fromJson(it, mapType)
+            val adapter = moshi.adapter<Map<String, String>>(
+                Types.newParameterizedType(Map::class.java, String::class.java, String::class.java)
+            )
+            adapter.fromJson(it)
         }
     }
     
