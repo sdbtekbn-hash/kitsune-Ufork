@@ -106,7 +106,7 @@ abstract class MagiskInstallImpl protected constructor(
 
     private suspend fun extractFiles(): Boolean {
         console.add("- Device platform: ${Const.CPU_ABI}")
-        console.add("- Installing: ${BuildConfig.APP_VERSION_NAME} (${BuildConfig.APP_VERSION_CODE})")
+        console.add("- Installing Kitsune Mask: ${BuildConfig.APP_VERSION_NAME} (${BuildConfig.APP_VERSION_CODE})")
 
         installDir = localFS.getFile(context.filesDir.parent, "install")
         installDir.deleteRecursively()
@@ -620,9 +620,9 @@ abstract class ConsoleInstaller(
     override suspend fun exec(): Boolean {
         val success = super.exec()
         if (success) {
-            console.add("- All done!")
+            console.add("- Kitsune Mask installation completed!")
         } else {
-            console.add("! Installation failed")
+            console.add("! Kitsune Mask installation failed")
         }
         return success
     }
