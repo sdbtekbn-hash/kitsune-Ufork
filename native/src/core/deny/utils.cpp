@@ -160,7 +160,7 @@ static bool proc_name_match(int pid, string_view name) {
     return false;
 }
 
-static bool proc_context_match(int pid, string_view context) {
+bool proc_context_match(int pid, string_view context) {
     char buf[PATH_MAX];
     sprintf(buf, "/proc/%d/attr/current", pid);
     if (auto fp = open_file(buf, "re")) {
