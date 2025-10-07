@@ -108,7 +108,7 @@ pub(crate) fn lsetfilecon(path: &Utf8CStr, con: &Utf8CStr) -> bool {
 }
 
 // Export C-compatible wrappers for deny system
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn setfilecon_impl(path: *const libc::c_char, con: *const libc::c_char) -> bool {
     if path.is_null() || con.is_null() {
         return false;
@@ -120,7 +120,7 @@ pub extern "C" fn setfilecon_impl(path: *const libc::c_char, con: *const libc::c
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn lsetfilecon_impl(path: *const libc::c_char, con: *const libc::c_char) -> bool {
     if path.is_null() || con.is_null() {
         return false;
@@ -132,20 +132,24 @@ pub extern "C" fn lsetfilecon_impl(path: *const libc::c_char, con: *const libc::
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn fsetfilecon_impl(fd: libc::c_int, con: *const libc::c_char) -> bool {
     if con.is_null() {
         return false;
     }
     unsafe {
         use std::os::unix::io::RawFd;
+        use base::FsPathBuf;
         let con = Utf8CStr::from_ptr(con);
-        use base::FsPath;
-        (fd as RawFd).set_secontext(con).is_ok()
+        // Use procfs to set context on file descriptor
+        let mut path = FsPathBuf::new();
+        path.push_str("/proc/self/fd/");
+        path.push_str(&fd.to_string());
+        path.set_secontext(con).is_ok()
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn selinux_enabled_impl() -> bool {
     use base::libc::access;
     use base::libc::F_OK;
