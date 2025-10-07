@@ -138,11 +138,10 @@ pub extern "C" fn fsetfilecon_impl(fd: libc::c_int, con: *const libc::c_char) ->
         return false;
     }
     unsafe {
-        use std::os::unix::io::RawFd;
-        use base::FsPathBuf;
+        use base::cstr;
         let con = Utf8CStr::from_ptr(con);
         // Use procfs to set context on file descriptor
-        let mut path = FsPathBuf::new();
+        let mut path = cstr::buf::default();
         path.push_str("/proc/self/fd/");
         path.push_str(&fd.to_string());
         path.set_secontext(con).is_ok()
