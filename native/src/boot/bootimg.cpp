@@ -782,7 +782,8 @@ void repack(const char *src_img, const char *out_img, bool skip_comp) {
             } else {
                 ssprintf(file_name, sizeof(file_name), "%s.cpio", it.ramdisk_name);
             }
-            mmap_data m(dirfd, file_name);
+            auto path = fd_path(dirfd, file_name);
+            mmap_data m(path.data());
             format_t fmt = check_fmt_lg(boot.ramdisk + it.ramdisk_offset, it.ramdisk_size);
             it.ramdisk_offset = ramdisk_offset;
             if (!skip_comp && !COMPRESSED_ANY(check_fmt(m.buf(), m.sz())) && COMPRESSED(fmt)) {
