@@ -10,11 +10,12 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/WidgetFoundation.Card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/l_50"
-        android:onClick="@{() -> item.openInfo()}">
+        android:onClick="@{() -> item.openInfo()}"
+        app:cardCornerRadius="@dimen/card_radius"
+        app:cardElevation="@dimen/card_elevation">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,11 +67,11 @@
                         android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/WidgetFoundation.Text.Title"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@{item.name}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:textStyle="bold"
                             tools:text="Module Name" />
 
@@ -87,20 +88,21 @@
                     </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/WidgetFoundation.Text.Caption.Variant"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@{@string/module_repo_version(item.version, item.author)}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         tools:text="v1.0 by Author" />
 
                     <!-- Categories -->
                     <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/WidgetFoundation.Text.Caption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@{item.categoriesText}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                         android:textColor="?attr/colorPrimary"
                         goneUnless="@{item.hasCategories}"
                         tools:text="System, Performance" />
@@ -111,7 +113,6 @@
 
             <!-- Description -->
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/WidgetFoundation.Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/l1"
@@ -120,6 +121,7 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text="@{item.description}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 goneUnless="@{!item.description.empty}"
                 tools:text="Module description goes here. This is a longer description to show how it wraps." />
 
@@ -134,29 +136,31 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/WidgetFoundation.Text.Caption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{@string/module_repo_last_update(item.lastUpdate)}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     tools:text="Updated: 2025-01-01" />
 
                 <!-- Size -->
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/WidgetFoundation.Text.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/l_50"
                     android:text="@{item.sizeFormatted}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     goneUnless="@{item.hasSize}"
                     tools:text="2.5 MB" />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/WidgetFoundation.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/download"
-                    android:onClick="@{() -> item.download()}" />
+                    android:onClick="@{() -> item.download()}"
+                    style="@style/Widget.MaterialComponents.Button.TextButton" />
 
             </LinearLayout>
 

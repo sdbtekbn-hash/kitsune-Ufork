@@ -24,12 +24,13 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/WidgetFoundation.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/l1"
                     android:layout_marginTop="@dimen/l1"
-                    android:layout_marginEnd="@dimen/l1">
+                    android:layout_marginEnd="@dimen/l1"
+                    app:cardCornerRadius="@dimen/card_radius"
+                    app:cardElevation="@dimen/card_elevation">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -38,14 +39,13 @@
                         android:padding="@dimen/l1">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/WidgetFoundation.Text.Headline"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/module_repo_search_title"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatEditText
-                            style="@style/WidgetFoundation.EditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/l_50"

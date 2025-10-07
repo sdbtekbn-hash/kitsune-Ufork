@@ -2,10 +2,13 @@ package io.github.huskydg.magisk.core.model.module
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import io.github.huskydg.magisk.data.database.Converters
 import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
 
 @Entity(tableName = "blacklist")
+@TypeConverters(Converters::class)
 @Parcelize
 data class Blacklist(
     @PrimaryKey val id: String,

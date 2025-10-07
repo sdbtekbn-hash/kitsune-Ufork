@@ -3,14 +3,17 @@ package io.github.huskydg.magisk.core.model.module
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import io.github.huskydg.magisk.core.model.RepoModuleInfo
 import io.github.huskydg.magisk.core.repository.NetworkService
+import io.github.huskydg.magisk.data.database.Converters
 import io.github.huskydg.magisk.di.ServiceLocator
 import kotlinx.parcelize.Parcelize
 import java.text.DateFormat
 import java.util.*
 
 @Entity(tableName = "modules")
+@TypeConverters(Converters::class)
 @Parcelize
 data class OnlineModule(
     @PrimaryKey override var id: String,
