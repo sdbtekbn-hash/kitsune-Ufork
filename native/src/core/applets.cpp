@@ -4,6 +4,7 @@
 
 #include <consts.hpp>
 #include <base.hpp>
+#include <core.hpp>
 
 using namespace std;
 
