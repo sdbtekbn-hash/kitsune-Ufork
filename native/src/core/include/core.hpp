@@ -7,6 +7,7 @@
 #include <limits>
 #include <atomic>
 #include <functional>
+#include <vector>
 
 #include <base.hpp>
 
