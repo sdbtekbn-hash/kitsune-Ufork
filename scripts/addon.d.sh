@@ -91,7 +91,7 @@ main() {
   else
     PRETTY_VER="$MAGISK_VER($MAGISK_VER_CODE)"
   fi
-  print_title "Magisk $PRETTY_VER addon.d"
+  print_title "Kitsune Mask $PRETTY_VER addon.d"
 
   mount_partitions
   check_data
