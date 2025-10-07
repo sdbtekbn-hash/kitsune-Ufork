@@ -266,7 +266,6 @@
     <string name="module_repo_refresh">Refresh</string>
     <string name="module_repo_version">v%1$s by %2$s</string>
     <string name="module_repo_last_update">Updated: %1$s</string>
-    <string name="download">Download</string>
     
     <!--Module Enhanced-->
     <string name="module_icon">Module Icon</string>
