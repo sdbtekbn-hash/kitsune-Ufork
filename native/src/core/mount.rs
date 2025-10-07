@@ -1,6 +1,6 @@
 use std::{
     cmp::Ordering::{Greater, Less},
-    path::{Path, PathBuf},
+    path::Path,
 };
 
 use num_traits::AsPrimitive;
