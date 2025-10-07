@@ -147,6 +147,7 @@
     <string name="settings_denylist_config_title">Configure DenyList</string>
     <string name="settings_denylist_config_summary">Select the processes to be included on the denylist</string>
     <string name="settings_magiskhide_title">MagiskHide</string>
+    <string name="settings_magiskhide_summary">Hide root from applications</string>
     <string name="settings_hidelist_config_title">Configure MagiskHide</string>
     <string name="settings_hidelist_config_summary">Select the processes to be included on the hidelist</string>
     <string name="settings_sulist_title">Enforce SuList</string>
