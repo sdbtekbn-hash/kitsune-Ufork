@@ -156,6 +156,12 @@
     <string name="settings_sulist_config_title">Configure SuList</string>
     <string name="settings_sulist_config_summary">Select the processes to be included on the sulist</string>
     <string name="settings_sulist_enforced">SuList is enforced</string>
+    <string name="settings_nethunter_mode_title">NetHunter Mode</string>
+    <string name="settings_nethunter_mode_summary">Fix Kali NetHunter permissions and hide from Google Play Protect</string>
+    <string name="nethunter_mode_enabled">NetHunter Mode is enabled</string>
+    <string name="nethunter_mode_disabled">NetHunter Mode is disabled</string>
+    <string name="nethunter_toast_enabled">NetHunter Mode enabled. Reboot required.</string>
+    <string name="nethunter_toast_disabled">NetHunter Mode disabled. Reboot required.</string>
     <string name="settings_sulist_error_magiskhide">This feature need MagiskHide to be enabled</string>
     <string name="settings_hosts_title">Systemless hosts</string>
     <string name="settings_hosts_summary">Systemless hosts support for ad blocking apps</string>

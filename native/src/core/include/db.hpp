@@ -41,6 +41,7 @@ constexpr const char *DB_SETTING_KEYS[] = {
     "mnt_ns",
     "magiskhide",
     "sulist",
+    "nethunter_mode",
     "zygisk"
 };
 
@@ -52,6 +53,7 @@ enum {
     SU_MNT_NS,
     DENYLIST_CONFIG,
     SULIST_CONFIG,
+    NETHUNTER_MODE_CONFIG,
     ZYGISK_CONFIG
 };
 

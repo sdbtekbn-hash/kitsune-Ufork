@@ -144,6 +144,7 @@ impl MagiskD {
             Ordering::Release,
         );
         initialize_denylist();
+        init_nethunter_mode();
         setup_module_mount();
         let modules = self.handle_modules();
         self.module_list.set(modules).ok();

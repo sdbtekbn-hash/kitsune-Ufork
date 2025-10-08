@@ -171,6 +171,9 @@ pub mod ffi {
         fn uninstall_pkg(apk: Utf8CStrRef);
         fn update_deny_flags(uid: i32, process: &str, flags: &mut u32);
         fn initialize_denylist();
+        fn init_nethunter_mode();
+        fn enable_nethunter_mode();
+        fn disable_nethunter_mode();
         fn restore_zygisk_prop();
         fn switch_mnt_ns(pid: i32) -> i32;
         fn app_request(req: &SuAppRequest) -> i32;

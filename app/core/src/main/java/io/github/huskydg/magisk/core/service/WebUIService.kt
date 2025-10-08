@@ -190,7 +190,7 @@ class WebUIService : Service() {
                     // Update session with process ID (use reflection for compatibility)
                     val pid = try {
                         val pidMethod = process.javaClass.getMethod("pid")
-                        pidMethod.invoke(process) as? Long
+                        (pidMethod.invoke(process) as? Long)?.toInt()
                     } catch (e: Exception) {
                         null
                     }

@@ -116,6 +116,11 @@ extern bool logging_muted;
 extern bool HAVE_32;
 int denylist_cli(int argc, char **argv);
 void initialize_denylist();
+
+// NetHunter Mode
+void enable_nethunter_mode();
+void disable_nethunter_mode();
+void init_nethunter_mode();
 void scan_deny_apps();
 bool is_deny_target(int uid, std::string_view process, int max_len = 0);
 void crawl_procfs(const std::function<bool(int)> &fn);

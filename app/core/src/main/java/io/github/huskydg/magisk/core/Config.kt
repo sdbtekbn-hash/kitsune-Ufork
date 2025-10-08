@@ -26,6 +26,7 @@ object Config : PreferenceConfig, DBConfig {
         const val SU_MANAGER = "requester"
         const val KEYSTORE = "keystore"
         const val SULIST = "sulist"
+        const val NETHUNTER_MODE = "nethunter_mode"
 
         // prefs
         const val SU_REQUEST_TIMEOUT = "su_request_timeout"
@@ -107,6 +108,7 @@ object Config : PreferenceConfig, DBConfig {
     var askedHome by preference(Key.ASKED_HOME, false)
     var bootloop by dbSettings(Key.BOOTLOOP, 0)
     var sulist by dbSettings(Key.SULIST, false)
+    var netHunterMode by dbSettings(Key.NETHUNTER_MODE, false)
 
     var safetyNotice by preference(Key.SAFETY, true)
     var darkTheme by preference(Key.DARK_THEME, -1)
