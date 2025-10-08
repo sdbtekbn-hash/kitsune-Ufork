@@ -219,44 +219,15 @@ mod sqlite {
     }
 }
 
-extern "Rust" {
-    fn android_logging();
-    fn zygisk_logging();
-    fn zygisk_close_logd();
-    fn zygisk_get_logd() -> i32;
-    fn setup_logfile();
-    fn find_preinit_device() -> String;
-    fn zygisk_should_load_module(flags: u32) -> bool;
-    unsafe fn persist_get_prop(name: Utf8CStrRef, prop_cb: Pin<&mut PropCb>);
-    unsafe fn persist_get_props(prop_cb: Pin<&mut PropCb>);
-    unsafe fn persist_delete_prop(name: Utf8CStrRef) -> bool;
-    unsafe fn persist_set_prop(name: Utf8CStrRef, value: Utf8CStrRef) -> bool;
-    fn send_fd(socket: i32, fd: i32) -> bool;
-    fn send_fds(socket: i32, fds: &[i32]) -> bool;
-    fn recv_fd(socket: i32) -> i32;
-    fn recv_fds(socket: i32) -> Vec<i32>;
-    unsafe fn write_to_fd(self: &SuRequest, fd: i32);
-    fn pump_tty(infd: i32, outfd: i32);
-    fn get_pty_num(fd: i32) -> i32;
-    fn restore_stdin() -> bool;
-    fn restorecon();
-    fn lgetfilecon(path: Utf8CStrRef, con: &mut [u8]) -> bool;
-    fn setfilecon(path: Utf8CStrRef, con: Utf8CStrRef) -> bool;
-    fn lsetfilecon(path: Utf8CStrRef, con: Utf8CStrRef) -> bool;
-
-    #[namespace = "rust"]
-    fn daemon_entry();
 }
 
 // Default constructors
-extern "Rust" {
-    #[Self = SuRequest]
-    #[cxx_name = "New"]
+unsafe extern "Rust" {
     fn default() -> SuRequest;
 }
 
 // FFI for MagiskD
-extern "Rust" {
+unsafe extern "Rust" {
     type MagiskD;
     fn reboot(&self);
     fn sdk_int(&self) -> i32;
@@ -268,20 +239,15 @@ extern "Rust" {
     fn su_daemon_handler(&self, client: i32, cred: &UCred);
     #[cxx_name = "get_manager"]
     unsafe fn get_manager_for_cxx(&self, user: i32, ptr: *mut CxxString, install: bool) -> i32;
-
     fn get_db_setting(&self, key: DbEntryKey) -> i32;
     #[cxx_name = "set_db_setting"]
     fn set_db_setting_for_cxx(&self, key: DbEntryKey, value: i32) -> bool;
     #[cxx_name = "db_exec"]
     fn db_exec_for_cxx(&self, client_fd: i32);
 
-    #[Self = MagiskD]
-    #[cxx_name = "Get"]
     fn get() -> &'static MagiskD;
 }
 
-unsafe extern "C++" {
-    fn handle_modules(self: &MagiskD) -> Vec<ModuleInfo>;
 }
 
 #[repr(transparent)]
