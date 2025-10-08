@@ -88,6 +88,9 @@ data class LocalModule(
     // WebUI properties
     val hasWebUI get() = webuiEnabled && File(base, "webui.sh").exists()
     val webuiScriptPath get() = File(base, "webui.sh").absolutePath
+    
+    // Categories text for display
+    val categoriesText get() = categories?.joinToString(", ") ?: ""
 
     var enable: Boolean
         get() = !disableFile.exists()

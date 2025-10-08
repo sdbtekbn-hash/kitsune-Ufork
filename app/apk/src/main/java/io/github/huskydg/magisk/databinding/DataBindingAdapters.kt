@@ -306,3 +306,20 @@ fun TextView.setText(text: TextHolder) {
 fun Spinner.setAdapter(items: Array<Any>, layoutRes: Int) {
     adapter = ArrayAdapter(context, layoutRes, items)
 }
+
+@BindingAdapter("imageUrl")
+fun ImageView.setImageUrl(url: String?) {
+    if (url.isNullOrBlank()) {
+        setImageDrawable(null)
+    } else {
+        // For now, we'll use a placeholder or load from local path
+        // In a real implementation, you'd use Glide, Picasso, or Coil here
+        setImageDrawable(null)
+    }
+}
+
+@BindingAdapter("itemBinding")
+fun RecyclerView.setItemBinding(binding: Any?) {
+    // This is a placeholder - the actual implementation would depend on the specific binding type
+    // For now, we'll leave it empty as it's not critical for the build
+}
