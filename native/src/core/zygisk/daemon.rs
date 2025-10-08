@@ -1,7 +1,7 @@
 use crate::consts::MODULEROOT;
 use crate::daemon::{MagiskD, to_user_id};
 use crate::ffi::{
-    ZygiskRequest, ZygiskStateFlags, get_magisk_tmp, restore_zygisk_prop, update_deny_flags,
+    ZygiskRequest, ZygiskStateFlags, get_magisk_tmp, restore_zygisk_prop_rs, update_deny_flags,
 };
 use crate::socket::{IpcRead, UnixSocketExt};
 use base::libc::{O_CLOEXEC, O_CREAT, O_RDONLY, STDOUT_FILENO};

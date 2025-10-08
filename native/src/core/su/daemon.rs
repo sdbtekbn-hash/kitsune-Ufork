@@ -172,7 +172,7 @@ impl MagiskD {
             let mut access = info.access.lock().unwrap();
 
             if access.settings.policy == SuPolicy::Query {
-                let fd = app_request(&app_req);
+                let fd = app_request_rs(&app_req);
                 if fd < 0 {
                     access.settings.policy = SuPolicy::Deny;
                 } else {
@@ -188,9 +188,9 @@ impl MagiskD {
             }
 
             if access.settings.log {
-                app_log(&app_req, access.settings.policy, access.settings.notify);
+                app_log_rs(&app_req, access.settings.policy, access.settings.notify);
             } else if access.settings.notify {
-                app_notify(&app_req, access.settings.policy);
+                app_notify_rs(&app_req, access.settings.policy);
             }
 
             // Before unlocking, refresh the timestamp
@@ -216,7 +216,7 @@ impl MagiskD {
             // ack
             client.write_pod(&0).ok();
 
-            exec_root_shell(client.into_raw_fd(), cred.pid, &mut req, info.cfg.mnt_ns);
+            exec_root_shell_rs(client.into_raw_fd(), cred.pid, &mut req, info.cfg.mnt_ns);
             return;
         }
         if child < 0 {
