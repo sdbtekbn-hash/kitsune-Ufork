@@ -169,153 +169,151 @@ void android_logging() {
 }
 
 // Rust FFI wrapper functions that match the Rust declarations
-extern "C" {
-    bool is_deny_target_rs(int uid, rust::Str process, int max_len) {
-        std::string_view process_view(process);
-        return is_deny_target(uid, process_view, max_len);
-    }
+bool is_deny_target_rs(int uid, rust::Str process, int max_len) {
+    std::string_view process_view(process);
+    return is_deny_target(uid, process_view, max_len);
+}
 
-    void zygisk_cleanup_with_jni_rs(uint8_t* env) {
-        JNIEnv* jni_env = reinterpret_cast<JNIEnv*>(env);
-        zygisk_cleanup_with_jni(jni_env);
-    }
+void zygisk_cleanup_with_jni_rs(uint8_t* env) {
+    JNIEnv* jni_env = reinterpret_cast<JNIEnv*>(env);
+    zygisk_cleanup_with_jni(jni_env);
+}
 
-    void register_plt_hook_rs(uint8_t* symbol, uint8_t** backup) {
-        void* symbol_ptr = reinterpret_cast<void*>(symbol);
-        void** backup_ptr = reinterpret_cast<void**>(backup);
-        register_plt_hook(symbol_ptr, backup_ptr);
-    }
+void register_plt_hook_rs(uint8_t* symbol, uint8_t** backup) {
+    void* symbol_ptr = reinterpret_cast<void*>(symbol);
+    void** backup_ptr = reinterpret_cast<void**>(backup);
+    register_plt_hook(symbol_ptr, backup_ptr);
+}
 
-    void register_jni_hook_rs(rust::Str clz, uint8_t* method) {
-        std::string clz_str(clz);
-        JNINativeMethod* method_ptr = reinterpret_cast<JNINativeMethod*>(method);
-        register_jni_hook(clz_str, *method_ptr);
-    }
+void register_jni_hook_rs(rust::Str clz, uint8_t* method) {
+    std::string clz_str(clz);
+    JNINativeMethod* method_ptr = reinterpret_cast<JNINativeMethod*>(method);
+    register_jni_hook(clz_str, *method_ptr);
+}
 
-    void restore_jni_hooks_rs(uint8_t* env) {
-        JNIEnv* jni_env = reinterpret_cast<JNIEnv*>(env);
-        restore_jni_hooks(jni_env);
-    }
+void restore_jni_hooks_rs(uint8_t* env) {
+    JNIEnv* jni_env = reinterpret_cast<JNIEnv*>(env);
+    restore_jni_hooks(jni_env);
+}
 
-    rust::Vec<rust::String> parse_mount_info_rs_wrapper(rust::Str pid) {
-        std::string pid_str(pid);
-        rust::String rust_pid(pid_str);
-        return parse_mount_info_rs(rust_pid);
-    }
+rust::Vec<rust::String> parse_mount_info_rs_wrapper(rust::Str pid) {
+    std::string pid_str(pid);
+    rust::String rust_pid(pid_str);
+    return parse_mount_info_rs(rust_pid);
+}
 
-    bool setfilecon_rs(rust::Str path, rust::Str con) {
-        std::string path_str(path);
-        std::string con_str(con);
-        return setfilecon(path_str.c_str(), con_str.c_str()) == 0;
-    }
+bool setfilecon_rs(rust::Str path, rust::Str con) {
+    std::string path_str(path);
+    std::string con_str(con);
+    return setfilecon(path_str.c_str(), con_str.c_str()) == 0;
+}
 
-    void update_deny_flags_rs(int uid, rust::Str process, uint32_t &flags) {
-        update_deny_flags(uid, process, flags);
-    }
+void update_deny_flags_rs(int uid, rust::Str process, uint32_t &flags) {
+    update_deny_flags(uid, process, flags);
+}
 
-    void initialize_denylist_rs() {
-        initialize_denylist();
-    }
+void initialize_denylist_rs() {
+    initialize_denylist();
+}
 
-    void init_nethunter_mode_rs() {
-        init_nethunter_mode();
-    }
+void init_nethunter_mode_rs() {
+    init_nethunter_mode();
+}
 
-    void enable_nethunter_mode_rs() {
-        enable_nethunter_mode();
-    }
+void enable_nethunter_mode_rs() {
+    enable_nethunter_mode();
+}
 
-    void disable_nethunter_mode_rs() {
-        disable_nethunter_mode();
-    }
+void disable_nethunter_mode_rs() {
+    disable_nethunter_mode();
+}
 
-    void init_solist_hiding_rs() {
-        init_solist_hiding();
-    }
+void init_solist_hiding_rs() {
+    init_solist_hiding();
+}
 
-    void init_seccomp_hiding_rs() {
-        init_seccomp_hiding();
-    }
+void init_seccomp_hiding_rs() {
+    init_seccomp_hiding();
+}
 
-    void init_ptrace_hiding_rs() {
-        init_ptrace_hiding();
-    }
+void init_ptrace_hiding_rs() {
+    init_ptrace_hiding();
+}
 
-    void solist_reset_counters_rs(size_t load, size_t unload) {
-        solist_reset_counters(load, unload);
-    }
+void solist_reset_counters_rs(size_t load, size_t unload) {
+    solist_reset_counters(load, unload);
+}
 
-    void restore_plt_hooks_rs() {
-        restore_plt_hooks();
-    }
+void restore_plt_hooks_rs() {
+    restore_plt_hooks();
+}
 
-    void reset_module_counters_rs() {
-        reset_module_counters();
-    }
+void reset_module_counters_rs() {
+    reset_module_counters();
+}
 
-    void send_seccomp_event_rs() {
-        send_seccomp_event();
-    }
+void send_seccomp_event_rs() {
+    send_seccomp_event();
+}
 
-    bool trace_zygote_rs(int pid) {
-        return trace_zygote(pid);
-    }
+bool trace_zygote_rs(int pid) {
+    return trace_zygote(pid);
+}
 
-    void cleanup_ptrace_rs() {
-        cleanup_ptrace();
-    }
+void cleanup_ptrace_rs() {
+    cleanup_ptrace();
+}
 
-    bool is_ptrace_active_rs() {
-        return is_ptrace_active();
-    }
+bool is_ptrace_active_rs() {
+    return is_ptrace_active();
+}
 
-    void restore_zygisk_prop_rs() {
-        restore_zygisk_prop();
-    }
+void restore_zygisk_prop_rs() {
+    restore_zygisk_prop();
+}
 
-    int switch_mnt_ns_rs(int pid) {
-        return switch_mnt_ns(pid);
-    }
+int switch_mnt_ns_rs(int pid) {
+    return switch_mnt_ns(pid);
+}
 
-    void setup_logfile_rs() {
-        setup_logfile();
-    }
+void setup_logfile_rs() {
+    setup_logfile();
+}
 
-    void android_logging_rs() {
-        android_logging();
-    }
+void android_logging_rs() {
+    android_logging();
+}
 
-    void restorecon_rs() {
-        restorecon();
-    }
+void restorecon_rs() {
+    restorecon();
+}
 
-    // Note: find_preinit_device_rs cannot be in extern "C" block due to rust::String return type
-    // This function should be called from C++ code, not C code
+// Note: find_preinit_device_rs cannot be in extern "C" block due to rust::String return type
+// This function should be called from C++ code, not C code
 
-    // Additional missing functions
-    int app_request_rs(const SuAppRequest* req) {
-        return app_request(*req);
-    }
+// Additional missing functions
+int app_request_rs(const SuAppRequest* req) {
+    return app_request(*req);
+}
 
-    void app_notify_rs(const SuAppRequest* req, SuPolicy policy) {
-        app_notify(*req, policy);
-    }
+void app_notify_rs(const SuAppRequest* req, SuPolicy policy) {
+    app_notify(*req, policy);
+}
 
-    void app_log_rs(const SuAppRequest* req, SuPolicy policy, bool notify) {
-        app_log(*req, policy, notify);
-    }
+void app_log_rs(const SuAppRequest* req, SuPolicy policy, bool notify) {
+    app_log(*req, policy, notify);
+}
 
-    void exec_root_shell_rs(int client, int pid, SuRequest* req, MntNsMode mode) {
-        exec_root_shell(client, pid, *req, mode);
-    }
+void exec_root_shell_rs(int client, int pid, SuRequest* req, MntNsMode mode) {
+    exec_root_shell(client, pid, *req, mode);
+}
 
-    int get_manager_for_cxx_rs(int user, rust::String* pkg, bool install) {
-        return get_manager_for_cxx(user, *pkg, install);
-    }
+int get_manager_for_cxx_rs(int user, rust::String* pkg, bool install) {
+    return get_manager_for_cxx(user, *pkg, install);
+}
 
-    void load_modules_su_rs() {
-        load_modules_su();
-    }
+void load_modules_su_rs() {
+    load_modules_su();
 }
 
 // C++ wrapper for find_preinit_device_rs (cannot be in extern "C" due to rust::String return type)
