@@ -2,7 +2,7 @@ use crate::UCred;
 use crate::daemon::{AID_ROOT, AID_SHELL, MagiskD, to_app_id, to_user_id};
 use crate::db::{DbSettings, MultiuserMode, RootAccess};
 use crate::ffi::{
-    SuAppRequest, SuPolicy, SuRequest, app_log, app_notify, app_request, exec_root_shell,
+    DbEntryKey, SuAppRequest, SuPolicy, SuRequest, app_log, app_notify, app_request, exec_root_shell, is_deny_target,
 };
 use crate::socket::IpcRead;
 use crate::su::db::RootSettings;
@@ -131,6 +131,34 @@ impl MagiskD {
         };
 
         let info = self.get_su_info(cred.uid as i32);
+        
+        // Check SuList mode: only allow if app is in the allow list
+        let sulist_enabled = self.get_db_setting(DbEntryKey::SulistConfig) != 0;
+        if sulist_enabled {
+            // Get process name for checking
+            let process_name = format!("/proc/{}/cmdline", cred.pid);
+            let cmdline = match std::fs::read_to_string(&process_name) {
+                Ok(mut s) => {
+                    if let Some(pos) = s.find('\0') {
+                        s.truncate(pos);
+                    }
+                    s
+                },
+                Err(_) => String::new(),
+            };
+            
+            // Check if this app is in the SuList (deny target in inverted mode)
+            let is_allowed = is_deny_target(cred.uid as i32, &cmdline, 95);
+            
+            if !is_allowed {
+                warn!("su: SuList enabled, app not in allow list. Denying request from uid=[{}]", cred.uid);
+                client.write_pod(&SuPolicy::Deny.repr).ok();
+                return;
+            }
+            
+            debug!("su: SuList enabled, app in allow list: {}", cmdline);
+        }
+        
         let app_req = SuAppRequest {
             uid: cred.uid as i32,
             pid: cred.pid,

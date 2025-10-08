@@ -170,6 +170,7 @@ pub mod ffi {
         fn install_apk(apk: Utf8CStrRef);
         fn uninstall_pkg(apk: Utf8CStrRef);
         fn update_deny_flags(uid: i32, process: &str, flags: &mut u32);
+        fn is_deny_target(uid: i32, process: &str, max_len: i32) -> bool;
         fn initialize_denylist();
         fn init_nethunter_mode();
         fn enable_nethunter_mode();

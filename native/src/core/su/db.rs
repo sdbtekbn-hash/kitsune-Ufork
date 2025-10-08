@@ -3,7 +3,7 @@ use crate::daemon::{
 };
 use crate::db::DbArg::Integer;
 use crate::db::{MultiuserMode, RootAccess, SqlTable, SqliteResult, SqliteReturn};
-use crate::ffi::{DbValues, SuPolicy};
+use crate::ffi::{DbEntryKey, DbValues, SuPolicy, is_deny_target};
 use base::ResultExt;
 
 impl Default for SuPolicy {
@@ -127,6 +127,31 @@ impl MagiskD {
             &[Integer(uid as i64)],
             &mut output_fn,
         );
+
+        // Check SuList mode: only allow if app is in the allow list
+        if granted {
+            let sulist_enabled = self.get_db_setting(DbEntryKey::SulistConfig).log().unwrap_or(0) != 0;
+            if sulist_enabled {
+                // Get process name - try to read from /proc
+                let process_name = format!("/proc/{}/cmdline", uid);
+                let cmdline = match std::fs::read_to_string(&process_name) {
+                    Ok(mut s) => {
+                        if let Some(pos) = s.find('\0') {
+                            s.truncate(pos);
+                        }
+                        s
+                    },
+                    Err(_) => String::new(),
+                };
+                
+                // Check if this app is in the SuList
+                granted = is_deny_target(uid, &cmdline, 95);
+                
+                if !granted {
+                    base::warn!("uid_granted_root: SuList enabled, app not in allow list. uid=[{}]", uid);
+                }
+            }
+        }
 
         granted
     }
