@@ -16,8 +16,8 @@ using namespace std;
 void setup_logfile();
 void android_logging();
 void restorecon();
-void setfilecon(const char *path, const char *con);
-void find_preinit_device();
+bool setfilecon(const char *path, const char *con);
+rust::String find_preinit_device();
 
 int SDK_INT = -1;
 
@@ -173,7 +173,17 @@ void write_string(int fd, string_view str) {
 
 // Forward declaration for MagiskD
 namespace rust {
-    class MagiskD;
+    class MagiskD {
+    public:
+        void su_daemon_handler(int client, const sock_cred &cred);
+        void prune_su_access();
+        void zygisk_reset(bool restore);
+        void db_exec(int client);
+        void reboot();
+        void zygisk_handler(int client);
+        void boot_stage_handler(int client, int code);
+        int sdk_int();
+    };
     MagiskD& get_magiskd_instance();
 }
 

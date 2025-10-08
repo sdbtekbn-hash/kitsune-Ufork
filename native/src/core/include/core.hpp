@@ -162,7 +162,7 @@ void hide_zygisk_injection();
 void zygisk_cleanup_post_specialize();
 void zygisk_cleanup_with_jni(JNIEnv *env);
 void register_plt_hook(void *symbol, void **backup);
-void register_jni_hook(const string &clz, const JNINativeMethod &method);
+void register_jni_hook(const std::string &clz, const JNINativeMethod &method);
 void restore_plt_hooks();
 void restore_jni_hooks(JNIEnv *env);
 void reset_module_counters();

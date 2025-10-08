@@ -30,22 +30,22 @@ int get_manager(int user_id, string *pkg, bool install) {
     
     // Call Rust implementation through FFI
     rust::String rust_pkg;
-    int uid = get_manager_for_cxx(user_id, rust_pkg, install);
+    int uid = rust::get_manager_for_cxx(user_id, rust_pkg, install);
     
     if (uid >= 0) {
-        *pkg = rust_pkg;
+        *pkg = std::string(rust_pkg);
     }
     
     return uid;
 }
 
 // Wrapper for parse_mount_info - calls Rust implementation
-vector<string> parse_mount_info(const char *pid) {
+vector<string> parse_mount_info_wrapper(const char *pid) {
     if (!pid) return vector<string>();
     
     // Call Rust implementation through FFI
     string pid_str(pid);
-    rust::Vec<rust::String> rust_result = parse_mount_info_rs(pid_str);
+    rust::Vec<rust::String> rust_result = rust::parse_mount_info_rs(pid_str);
     
     // Convert rust::Vec<rust::String> to vector<string>
     vector<string> result;
@@ -66,7 +66,7 @@ extern "C" {
 }
 
 // C++ wrappers that call Rust implementations
-int setfilecon(const char *path, const char *con) {
+int setfilecon_wrapper(const char *path, const char *con) {
     // Rust returns bool, C++ expects int (0 = success, -1 = error)
     return setfilecon_impl(path, con) ? 0 : -1;
 }

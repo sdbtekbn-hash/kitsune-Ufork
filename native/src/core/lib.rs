@@ -287,7 +287,7 @@ pub fn restorecon() {
     // This is a placeholder implementation
 }
 
-pub fn setfilecon(path: &str, con: &str) -> bool {
+pub fn setfilecon(_path: &str, _con: &str) -> bool {
     // Set SELinux context
     // This is a placeholder implementation
     false
