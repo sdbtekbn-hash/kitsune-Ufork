@@ -1,13 +1,16 @@
 #pragma once
 
 #include <sys/socket.h>
+#include <sys/un.h>
 #include <pthread.h>
 #include <poll.h>
 #include <string>
+#include <string_view>
 #include <limits>
 #include <atomic>
 #include <functional>
 #include <vector>
+#include <memory>
 
 #include <base.hpp>
 
@@ -46,7 +49,7 @@ struct sock_cred : public ucred {
     std::string context;
 };
 
-template<typename T> requires(std::is_trivially_copyable_v<T>)
+template<typename T>
 T read_any(int fd) {
     T val;
     if (xxread(fd, &val, sizeof(val)) != sizeof(val))
@@ -54,7 +57,7 @@ T read_any(int fd) {
     return val;
 }
 
-template<typename T> requires(std::is_trivially_copyable_v<T>)
+template<typename T>
 void write_any(int fd, T val) {
     if (fd < 0) return;
     xwrite(fd, &val, sizeof(val));
@@ -67,13 +70,13 @@ std::string read_string(int fd);
 bool read_string(int fd, std::string &str);
 void write_string(int fd, std::string_view str);
 
-template<typename T> requires(std::is_trivially_copyable_v<T>)
+template<typename T>
 void write_vector(int fd, const std::vector<T> &vec) {
     write_int(fd, vec.size());
     xwrite(fd, vec.data(), vec.size() * sizeof(T));
 }
 
-template<typename T> requires(std::is_trivially_copyable_v<T>)
+template<typename T>
 bool read_vector(int fd, std::vector<T> &vec) {
     int size = read_int(fd);
     vec.resize(size);

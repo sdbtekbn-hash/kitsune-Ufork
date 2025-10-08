@@ -1,5 +1,5 @@
 use crate::consts::{MAGISK_FULL_VER, MAGISK_PROC_CON, MAIN_CONFIG, ROOTMNT, ROOTOVL, SECURE_DIR};
-use crate::db::{Sqlite3, SqliteError};
+use crate::db::{Sqlite3, SqliteError, SqliteReturn};
 use crate::ffi::{
     DbEntryKey, ModuleInfo, RequestCode, check_key_combo, disable_modules, exec_common_scripts,
     exec_module_scripts, get_magisk_tmp, init_nethunter_mode, initialize_denylist, setup_magisk_env,
@@ -120,7 +120,7 @@ impl MagiskD {
         if let Some(db) = self.sql_connection.lock().unwrap().as_ref() {
             db.set_db_setting(key, value)
         } else {
-            Err(SqliteError(-1)) // Database not open error
+            (-1).sql_result()
         }
     }
 
