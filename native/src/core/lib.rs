@@ -41,7 +41,6 @@ mod zygisk;
 #[allow(clippy::needless_lifetimes)]
 #[cxx::bridge]
 mod ffi {
-    extern "C++" {
     #[repr(i32)]
     enum RequestCode {
         START_DAEMON,
