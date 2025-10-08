@@ -288,7 +288,7 @@ object NetHunterMode : BaseSettingsItem.Toggle() {
             notifyPropertyChanged(BR.description)
             val message = if (value) CoreR.string.nethunter_toast_enabled.asText()
                          else CoreR.string.nethunter_toast_disabled.asText()
-            AppContext.toast(message, android.widget.Toast.LENGTH_SHORT)
+            AppContext.toast(message.getText(AppContext.resources), android.widget.Toast.LENGTH_SHORT)
         }
     
     val mismatch get() = value != Info.netHunterMode
