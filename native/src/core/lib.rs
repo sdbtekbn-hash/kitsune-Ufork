@@ -133,7 +133,7 @@ mod ffi {
         request: &'a SuRequest,
     }
 
-    extern "C++" {
+    unsafe extern "C++" {
         include!("include/resetprop.hpp");
 
         #[cxx_name = "prop_cb"]
@@ -202,7 +202,7 @@ mod ffi {
 
 #[cxx::bridge]
 mod sqlite {
-    extern "C++" {
+    unsafe extern "C++" {
         include!("include/sqlite.hpp");
 
         type sqlite3;
