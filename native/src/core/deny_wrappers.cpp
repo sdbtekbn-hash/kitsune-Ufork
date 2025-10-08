@@ -113,7 +113,8 @@ void restore_jni_hooks_rs(uint8_t* env) {
 
 rust::Vec<rust::String> parse_mount_info_rs_wrapper(rust::Str pid) {
     std::string pid_str(pid);
-    return parse_mount_info_rs(pid_str);
+    rust::String rust_pid(pid_str);
+    return parse_mount_info_rs(rust_pid);
 }
 
 bool setfilecon_rs(rust::Str path, rust::Str con) {
