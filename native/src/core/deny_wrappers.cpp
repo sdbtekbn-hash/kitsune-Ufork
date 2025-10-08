@@ -292,24 +292,24 @@ void restorecon_rs() {
 // This function should be called from C++ code, not C code
 
 // Additional missing functions
-int app_request_rs(const SuAppRequest* req) {
-    return app_request(*req);
+int app_request_rs(const SuAppRequest& req) {
+    return app_request(req);
 }
 
-void app_notify_rs(const SuAppRequest* req, SuPolicy policy) {
-    app_notify(*req, policy);
+void app_notify_rs(const SuAppRequest& req, SuPolicy policy) {
+    app_notify(req, policy);
 }
 
-void app_log_rs(const SuAppRequest* req, SuPolicy policy, bool notify) {
-    app_log(*req, policy, notify);
+void app_log_rs(const SuAppRequest& req, SuPolicy policy, bool notify) {
+    app_log(req, policy, notify);
 }
 
-void exec_root_shell_rs(int client, int pid, SuRequest* req, MntNsMode mode) {
-    exec_root_shell(client, pid, *req, mode);
+void exec_root_shell_rs(int client, int pid, SuRequest& req, MntNsMode mode) {
+    exec_root_shell(client, pid, req, mode);
 }
 
-int get_manager_for_cxx_rs(int user, rust::String* pkg, bool install) {
-    return get_manager_for_cxx(user, *pkg, install);
+int get_manager_for_cxx_rs(int user, rust::String& pkg, bool install) {
+    return get_manager_for_cxx(user, pkg, install);
 }
 
 void load_modules_su_rs() {

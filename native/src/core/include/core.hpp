@@ -167,11 +167,11 @@ int switch_mnt_ns_rs(int pid);
 void setup_logfile_rs();
 void android_logging_rs();
 void restorecon_rs();
-int app_request_rs(const SuAppRequest* req);
-void app_notify_rs(const SuAppRequest* req, SuPolicy policy);
-void app_log_rs(const SuAppRequest* req, SuPolicy policy, bool notify);
-void exec_root_shell_rs(int client, int pid, SuRequest* req, MntNsMode mode);
-int get_manager_for_cxx_rs(int user, rust::String* pkg, bool install);
+int app_request_rs(const SuAppRequest& req);
+void app_notify_rs(const SuAppRequest& req, SuPolicy policy);
+void app_log_rs(const SuAppRequest& req, SuPolicy policy, bool notify);
+void exec_root_shell_rs(int client, int pid, SuRequest& req, MntNsMode mode);
+int get_manager_for_cxx_rs(int user, rust::String& pkg, bool install);
 void load_modules_su_rs();
 rust::String find_preinit_device_rs();
 
