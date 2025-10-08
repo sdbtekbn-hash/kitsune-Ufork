@@ -3,7 +3,7 @@ use crate::daemon::{
 };
 use crate::db::DbArg::Integer;
 use crate::db::{MultiuserMode, RootAccess, SqlTable, SqliteResult, SqliteReturn};
-use crate::ffi::{DbEntryKey, SuPolicy, is_deny_target};
+use crate::ffi::{DbEntryKey, SuPolicy, is_deny_target_rs};
 use crate::sqlite::DbValues;
 use base::ResultExt;
 
@@ -146,7 +146,7 @@ impl MagiskD {
                 };
                 
                 // Check if this app is in the SuList
-                granted = is_deny_target(uid, &cmdline, 95);
+                granted = is_deny_target_rs(uid, &cmdline, 95);
                 
                 if !granted {
                     base::warn!("uid_granted_root: SuList enabled, app not in allow list. uid=[{}]", uid);

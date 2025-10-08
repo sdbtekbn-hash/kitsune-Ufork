@@ -2,7 +2,7 @@ use crate::UCred;
 use crate::daemon::{AID_ROOT, AID_SHELL, MagiskD, to_app_id, to_user_id};
 use crate::db::{DbSettings, MultiuserMode, RootAccess};
 use crate::ffi::{
-    DbEntryKey, SuAppRequest, SuPolicy, SuRequest, app_log, app_notify, app_request, exec_root_shell, is_deny_target,
+    DbEntryKey, SuAppRequest, SuPolicy, SuRequest, app_log_rs, app_notify_rs, app_request_rs, exec_root_shell_rs, is_deny_target_rs,
 };
 use crate::socket::IpcRead;
 use crate::su::db::RootSettings;
@@ -148,7 +148,7 @@ impl MagiskD {
             };
             
             // Check if this app is in the SuList (deny target in inverted mode)
-            let is_allowed = is_deny_target(cred.uid as i32, &cmdline, 95);
+            let is_allowed = is_deny_target_rs(cred.uid as i32, &cmdline, 95);
             
             if !is_allowed {
                 warn!("su: SuList enabled, app not in allow list. Denying request from uid=[{}]", cred.uid);
