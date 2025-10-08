@@ -1,3 +1,4 @@
 mod daemon;
 
-pub use daemon::zygisk_should_load_module;
+// Note: This function is available but not currently used
+// pub use daemon::zygisk_should_load_module;

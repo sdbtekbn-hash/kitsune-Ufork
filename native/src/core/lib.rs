@@ -244,7 +244,9 @@ pub fn set_prop(name: &Utf8CStr, value: &Utf8CStr, skip_svc: bool) -> bool {
 
 // FFI wrapper functions for C++ integration
 pub fn get_manager_for_cxx(user: i32, pkg: &mut String, install: bool) -> i32 {
-    daemon::MagiskD::get().get_manager_for_cxx(user, pkg, install)
+    unsafe {
+        daemon::MagiskD::get().get_manager_for_cxx(user, pkg.as_mut_ptr() as *mut cxx::CxxString, install)
+    }
 }
 
 pub fn load_modules_su() {
