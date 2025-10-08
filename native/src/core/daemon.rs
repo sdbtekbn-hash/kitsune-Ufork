@@ -155,11 +155,11 @@ impl MagiskD {
             self.get_db_setting(DbEntryKey::ZygiskConfig) != 0,
             Ordering::Release,
         );
-    initialize_denylist();
-    init_nethunter_mode();
-    init_solist_hiding();
-    init_seccomp_hiding();
-    init_ptrace_hiding();
+    initialize_denylist_rs();
+    init_nethunter_mode_rs();
+    init_solist_hiding_rs();
+    init_seccomp_hiding_rs();
+    init_ptrace_hiding_rs();
         setup_module_mount();
         let modules = self.handle_modules();
         self.module_list.set(modules).ok();
