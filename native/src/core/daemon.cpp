@@ -12,6 +12,13 @@
 
 using namespace std;
 
+// Forward declarations for missing functions
+void setup_logfile();
+void android_logging();
+void restorecon();
+void setfilecon(const char *path, const char *con);
+void find_preinit_device();
+
 int SDK_INT = -1;
 
 static struct stat self_st;
@@ -164,8 +171,14 @@ void write_string(int fd, string_view str) {
     xwrite(fd, str.data(), str.size());
 }
 
+// Forward declaration for MagiskD
+namespace rust {
+    class MagiskD;
+    MagiskD& get_magiskd_instance();
+}
+
 static void handle_request_async(int client, int code, const sock_cred &cred) {
-    auto &daemon = MagiskD::Get();
+    auto &daemon = rust::get_magiskd_instance();
     switch (code) {
     case +RequestCode::DENYLIST:
         denylist_handler(client, &cred);
@@ -317,7 +330,7 @@ static void handle_request(pollfd *pfd) {
         exec_task([=, fd = client.release()] { handle_request_async(fd, code, cred); });
     } else {
         exec_task([=, fd = client.release()] {
-            MagiskD::Get().boot_stage_handler(fd, code);
+            rust::get_magiskd_instance().boot_stage_handler(fd, code);
         });
     }
 }
@@ -343,8 +356,8 @@ static void daemon_entry() {
     if (fd > STDERR_FILENO)
         close(fd);
 
-    rust::daemon_entry();
-    SDK_INT = MagiskD::Get().sdk_int();
+    daemon_entry();
+    SDK_INT = rust::get_magiskd_instance().sdk_int();
 
     // Get self stat
     xstat("/proc/self/exe", &self_st);

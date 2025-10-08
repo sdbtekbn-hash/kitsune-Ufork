@@ -11,6 +11,7 @@
 #include <functional>
 #include <vector>
 #include <memory>
+#include <jni.h>  // For JNIEnv and JNINativeMethod
 
 #include <base.hpp>
 
@@ -132,6 +133,11 @@ void load_modules(bool zygisk_enabled, const rust::Vec<ModuleInfo> &module_list)
 void load_modules_su();
 int get_manager_for_cxx(int user_id, rust::String &pkg, bool install);
 rust::Vec<rust::String> parse_mount_info_rs(const rust::String &pid);
+void setup_logfile();
+void android_logging();
+void restorecon();
+bool setfilecon(const char *path, const char *con);
+rust::String find_preinit_device();
 
 // Modules hiding
 void load_modules_hiding_config();

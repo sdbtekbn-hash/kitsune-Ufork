@@ -29,7 +29,7 @@ int get_manager(int user_id, string *pkg, bool install) {
     if (!pkg) return -1;
     
     // Call Rust implementation through FFI
-    string rust_pkg;
+    rust::String rust_pkg;
     int uid = get_manager_for_cxx(user_id, rust_pkg, install);
     
     if (uid >= 0) {
@@ -45,7 +45,15 @@ vector<string> parse_mount_info(const char *pid) {
     
     // Call Rust implementation through FFI
     string pid_str(pid);
-    return parse_mount_info_rs(pid_str);
+    rust::Vec<rust::String> rust_result = parse_mount_info_rs(pid_str);
+    
+    // Convert rust::Vec<rust::String> to vector<string>
+    vector<string> result;
+    for (const auto& item : rust_result) {
+        result.push_back(string(item));
+    }
+    
+    return result;
 }
 
 // SELinux wrappers - these are defined in Rust via FFI
