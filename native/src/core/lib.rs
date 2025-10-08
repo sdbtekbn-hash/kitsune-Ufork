@@ -219,11 +219,6 @@ mod sqlite {
     }
 }
 
-// Default constructors
-unsafe extern "Rust" {
-    fn default() -> SuRequest;
-}
-
 }
 
 #[repr(transparent)]
