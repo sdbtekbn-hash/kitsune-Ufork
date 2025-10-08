@@ -219,8 +219,6 @@ mod sqlite {
     }
 }
 
-}
-
 #[repr(transparent)]
 pub struct UCred(pub libc::ucred);
 
