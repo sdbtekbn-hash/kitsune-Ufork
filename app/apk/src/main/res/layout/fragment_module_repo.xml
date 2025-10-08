@@ -93,8 +93,8 @@
                     android:paddingEnd="@dimen/l1"
                     android:paddingBottom="@dimen/l1"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    itemBinding="@{viewModel.itemBinding}"
-                    items="@{viewModel.items}"
+                    app:extraBindings="@{viewModel.extraBindings}"
+                    app:items="@{viewModel.items}"
                     tools:listitem="@layout/item_module_repo" />
 
             </LinearLayout>

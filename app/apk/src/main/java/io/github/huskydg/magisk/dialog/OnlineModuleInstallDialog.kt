@@ -16,7 +16,7 @@ class OnlineModuleInstallDialog(private val item: OnlineModule) : MarkDownDialog
     private val svc get() = ServiceLocator.networkService
 
     override suspend fun getMarkdownText(): String {
-        val str = svc.fetchString(item.changelog)
+        val str = svc.fetchString(item.notes_url)
         return if (str.length > 1000) str.substring(0, 1000) else str
     }
 

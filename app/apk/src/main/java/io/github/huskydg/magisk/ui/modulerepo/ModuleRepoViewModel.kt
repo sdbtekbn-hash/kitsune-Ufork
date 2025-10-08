@@ -7,11 +7,12 @@ import io.github.huskydg.magisk.BR
 import io.github.huskydg.magisk.core.tasks.RepoUpdater
 import io.github.huskydg.magisk.data.database.RepoDao
 import io.github.huskydg.magisk.databinding.ObservableRvItem
-import io.github.huskydg.magisk.databinding.diffListOf
-import io.github.huskydg.magisk.databinding.filterableListOf
-import io.github.huskydg.magisk.databinding.itemBindingOf
+import io.github.huskydg.magisk.databinding.diffList
+import io.github.huskydg.magisk.databinding.filterList
+import io.github.huskydg.magisk.databinding.bindExtra
+import io.github.huskydg.magisk.databinding.DiffItem
 import io.github.huskydg.magisk.arch.BaseViewModel
-import io.github.huskydg.magisk.databinding.set
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -22,9 +23,11 @@ class ModuleRepoViewModel(
     private val repoUpdater: RepoUpdater
 ) : BaseViewModel() {
 
-    val itemBinding = itemBindingOf<ModuleRepoRvItem>()
-    val items = diffListOf<ModuleRepoRvItem>()
-    val itemsSearch = filterableListOf<ModuleRepoRvItem>()
+    val items = diffList<ModuleRepoRvItem>()
+    val itemsSearch = filterList<ModuleRepoRvItem>(viewModelScope)
+    val extraBindings = bindExtra {
+        // Add any extra bindings needed for the RecyclerView items
+    }
 
     @get:Bindable
     var query = ""
@@ -60,9 +63,10 @@ class ModuleRepoViewModel(
             }.map { ModuleRepoRvItem(it, this@ModuleRepoViewModel) }
 
             if (offset == 0) {
-                items.clear()
+                items.update(newItems)
+            } else {
+                items.update(items + newItems)
             }
-            items.addAll(newItems)
             canLoadMore = newItems.size == RepoDao.LIMIT
             currentPage = if (offset == 0) 1 else currentPage + 1
         }
@@ -93,8 +97,7 @@ class ModuleRepoViewModel(
                 repoDB.searchModules(query, 0, RepoDao.LIMIT)
             }.map { ModuleRepoRvItem(it, this@ModuleRepoViewModel) }
 
-            items.clear()
-            items.addAll(searched)
+            items.update(searched)
             canLoadMore = searched.size == RepoDao.LIMIT
             currentPage = 1
         }
@@ -107,7 +110,7 @@ class ModuleRepoViewModel(
                 repoDB.searchModules(query, currentPage * RepoDao.LIMIT, RepoDao.LIMIT)
             }.map { ModuleRepoRvItem(it, this@ModuleRepoViewModel) }
 
-            items.addAll(searched)
+            items.update(items + searched)
             canLoadMore = searched.size == RepoDao.LIMIT
             currentPage++
         }
@@ -147,7 +150,7 @@ class ModuleRepoViewModel(
 class ModuleRepoRvItem(
     val item: io.github.huskydg.magisk.core.model.module.OnlineModule,
     private val viewModel: ModuleRepoViewModel
-) : ObservableRvItem() {
+) : ObservableRvItem(), DiffItem<ModuleRepoRvItem> {
     override val layoutRes = io.github.huskydg.magisk.R.layout.item_module_repo
 
     val name get() = item.name
