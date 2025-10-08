@@ -40,7 +40,7 @@ mod zygisk;
 
 #[allow(clippy::needless_lifetimes)]
 #[cxx::bridge]
-pub mod ffi {
+mod ffi {
     #[repr(i32)]
     enum RequestCode {
         START_DAEMON,
@@ -172,31 +172,31 @@ pub mod ffi {
         fn update_deny_flags(uid: i32, process: &str, flags: &mut u32);
         fn is_deny_target(uid: i32, process: &str, max_len: i32) -> bool;
         fn initialize_denylist();
-    fn init_nethunter_mode();
-    fn enable_nethunter_mode();
-    fn disable_nethunter_mode();
-    
-    // ReZygisk Integration
-    fn init_solist_hiding();
-    fn init_seccomp_hiding();
-    fn init_ptrace_hiding();
-    fn solist_reset_counters(load: usize, unload: usize);
-    fn zygisk_cleanup_with_jni(env: *mut ());
-    fn register_plt_hook(symbol: *mut (), backup: *mut *mut ());
-    fn register_jni_hook(clz: *const std::ffi::c_char, method: *mut ());
-    fn restore_plt_hooks();
-    fn restore_jni_hooks(env: *mut ());
-    fn reset_module_counters();
-    fn send_seccomp_event();
-    fn trace_zygote(pid: i32) -> bool;
-    fn cleanup_ptrace();
-    fn is_ptrace_active() -> bool;
-    fn restore_zygisk_prop();
-    fn switch_mnt_ns(pid: i32) -> i32;
-    fn app_request(req: &SuAppRequest) -> i32;
-    fn app_notify(req: &SuAppRequest, policy: SuPolicy);
-    fn app_log(req: &SuAppRequest, policy: SuPolicy, notify: bool);
-    fn exec_root_shell(client: i32, pid: i32, req: &mut SuRequest, mode: MntNsMode);
+        fn init_nethunter_mode();
+        fn enable_nethunter_mode();
+        fn disable_nethunter_mode();
+        
+        // ReZygisk Integration
+        fn init_solist_hiding();
+        fn init_seccomp_hiding();
+        fn init_ptrace_hiding();
+        fn solist_reset_counters(load: usize, unload: usize);
+        fn zygisk_cleanup_with_jni(env: *mut ());
+        fn register_plt_hook(symbol: *mut (), backup: *mut *mut ());
+        fn register_jni_hook(clz: *const std::ffi::c_char, method: *mut ());
+        fn restore_plt_hooks();
+        fn restore_jni_hooks(env: *mut ());
+        fn reset_module_counters();
+        fn send_seccomp_event();
+        fn trace_zygote(pid: i32) -> bool;
+        fn cleanup_ptrace();
+        fn is_ptrace_active() -> bool;
+        fn restore_zygisk_prop();
+        fn switch_mnt_ns(pid: i32) -> i32;
+        fn app_request(req: &SuAppRequest) -> i32;
+        fn app_notify(req: &SuAppRequest, policy: SuPolicy);
+        fn app_log(req: &SuAppRequest, policy: SuPolicy, notify: bool);
+        fn exec_root_shell(client: i32, pid: i32, req: &mut SuRequest, mode: MntNsMode);
 }
 
 #[cxx::bridge]
