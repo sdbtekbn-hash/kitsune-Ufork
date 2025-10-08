@@ -16,6 +16,7 @@
 #include <base.hpp>
 
 #include "../core-rs.hpp"
+#include <resetprop.hpp>
 
 #define AID_ROOT   0
 #define AID_SHELL  2000
@@ -132,73 +133,28 @@ rust::Vec<ModuleInfo> collect_modules(bool zygisk_enabled, bool open_zygisk);
 void load_modules(bool zygisk_enabled, const rust::Vec<ModuleInfo> &module_list);
 void load_modules_su();
 int get_manager_for_cxx(int user_id, rust::String &pkg, bool install);
+// Rust FFI wrapper functions
+bool is_deny_target_rs(int uid, rust::Str process, int max_len);
+void zygisk_cleanup_with_jni_rs(uint8_t* env);
+void register_plt_hook_rs(uint8_t* symbol, uint8_t** backup);
+void register_jni_hook_rs(rust::Str clz, uint8_t* method);
+void restore_jni_hooks_rs(uint8_t* env);
+rust::Vec<rust::String> parse_mount_info_rs_wrapper(rust::Str pid);
+bool setfilecon_rs(rust::Str path, rust::Str con);
+
+// Original functions
 rust::Vec<rust::String> parse_mount_info_rs(const rust::String &pid);
-void setup_logfile();
-void android_logging();
-void restorecon();
-bool setfilecon(const char *path, const char *con);
-rust::String find_preinit_device();
-
-// Modules hiding
-void load_modules_hiding_config();
-void hide_modules_from_app(int pid, int uid);
-void init_modules_hiding();
-bool should_hide_module(int uid, const char *module_name);
-
-// Environment cleaning
-void clean_environment_variables();
-void spoof_selinux_context(int pid);
-void hide_abnormal_environment(int pid);
-
-// Mount cleaning
-void unmount_magisk_paths(int pid);
-void clean_mount_namespace(int pid);
-void enhance_magic_mount_hiding(int pid);
-
-// Zygisk hiding
-void clean_zygisk_memory_traces();
-void unload_zygisk_libraries();
-void hide_zygisk_injection();
-void zygisk_cleanup_post_specialize();
+int setfilecon(const char *path, const char *con);
 void zygisk_cleanup_with_jni(JNIEnv *env);
 void register_plt_hook(void *symbol, void **backup);
 void register_jni_hook(const std::string &clz, const JNINativeMethod &method);
-void restore_plt_hooks();
 void restore_jni_hooks(JNIEnv *env);
-void reset_module_counters();
-
-// Seccomp hiding
-void send_seccomp_event();
-void init_seccomp_hiding();
-
-// SOList hiding
-bool solist_init();
-bool solist_drop_so_path(void *lib_memory, bool unload);
-void solist_reset_counters(size_t load, size_t unload);
-void init_solist_hiding();
-
-// Ptrace hiding
-bool trace_zygote(int pid);
-void cleanup_ptrace();
-bool is_ptrace_active();
-void init_ptrace_hiding();
-void scan_deny_apps();
 bool is_deny_target(int uid, std::string_view process, int max_len = 0);
-void crawl_procfs(const std::function<bool(int)> &fn);
-void bind_mount_(const char *from, const char *to);
-int tmpfs_mount(const char *from, const char *to);
-std::vector<mount_info> parse_mount_info(const char *pid);
-bool proc_context_match(int pid, std::string_view context);
-void revert_unmount(int pid = -1) noexcept;
-void update_deny_flags(int uid, rust::Str process, uint32_t &flags);
-void update_sulist_config(bool enable);
-void mount_magisk_to_pid(int pid);
-void revert_daemon(int pid, int client = -1);
-bool is_uid_on_list(int uid);
-void proc_monitor();
-void umount_all_zygote();
 
-// MagiskSU
+// Additional missing functions
+void scan_deny_apps();
+void restorecon();
+rust::String find_preinit_device();
 void exec_root_shell(int client, int pid, SuRequest &req, MntNsMode mode);
 void app_log(const SuAppRequest &info, SuPolicy policy, bool notify);
 void app_notify(const SuAppRequest &info, SuPolicy policy);
@@ -209,3 +165,61 @@ static inline rust::Utf8CStr get_magisk_tmp_rs() { return get_magisk_tmp(); }
 static inline rust::String resolve_preinit_dir_rs(rust::Utf8CStr base_dir) {
     return resolve_preinit_dir(base_dir.c_str());
 }
+
+// Additional missing function declarations
+bool zygisk_enabled();
+void update_deny_flags(int uid, rust::Str process, uint32_t &flags);
+void init_solist_hiding();
+void init_seccomp_hiding();
+void init_ptrace_hiding();
+void solist_reset_counters(size_t load, size_t unload);
+void restore_plt_hooks();
+void reset_module_counters();
+void send_seccomp_event();
+bool trace_zygote(int pid);
+void cleanup_ptrace();
+bool is_ptrace_active();
+void setup_logfile();
+void android_logging();
+
+// Persist functions
+bool persist_set_prop(const char *name, const char *value);
+void persist_get_props(prop_collector &collector);
+bool persist_delete_prop(const char *name);
+void persist_get_prop(const char *name, prop_cb &cb);
+
+// Socket functions
+void restore_stdin();
+bool send_fd(int socket, int fd);
+int recv_fd(int socket);
+void pump_tty(int infd, int outfd);
+int get_pty_num(int fd);
+
+// Additional zygisk functions
+rust::Vec<int> recv_fds(int socket);
+void zygisk_logging();
+bool zygisk_should_load_module(uint32_t flags);
+void zygisk_close_logd();
+int zygisk_get_logd();
+
+// Additional missing function declarations for deny module
+void revert_unmount(int pid = -1) noexcept;
+void update_sulist_config(bool enable);
+void hide_abnormal_environment(int pid);
+void hide_modules_from_app(int pid, int uid);
+void* proc_monitor(void *arg);
+
+// Additional missing functions for ptrace and revert modules
+void PTRACE_LOG(const char *fmt, ...);
+void crawl_procfs(std::function<bool(int)> callback);
+void revert_daemon(int pid, int signal);
+void revert_daemon(int pid);
+void mount_magisk_to_pid(int pid);
+void bind_mount_(const char *source, const char *target);
+int tmpfs_mount(const char *name, const char *target);
+void enhance_magic_mount_hiding(int pid);
+bool proc_context_match(int pid, const char *context);
+
+// SuRequest helper functions
+SuRequest create_su_request();
+void su_request_write_to_fd(const SuRequest &req, int fd);

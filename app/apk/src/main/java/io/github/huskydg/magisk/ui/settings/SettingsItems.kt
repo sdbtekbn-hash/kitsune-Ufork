@@ -8,11 +8,13 @@ import android.view.View
 import androidx.databinding.Bindable
 import io.github.huskydg.magisk.BR
 import io.github.huskydg.magisk.R
+import io.github.huskydg.magisk.core.AppContext
 import io.github.huskydg.magisk.core.BuildConfig
 import io.github.huskydg.magisk.core.Config
 import io.github.huskydg.magisk.core.Const
 import io.github.huskydg.magisk.core.Info
 import io.github.huskydg.magisk.core.ktx.activity
+import io.github.huskydg.magisk.core.ktx.toast
 import io.github.huskydg.magisk.core.tasks.AppMigration
 import io.github.huskydg.magisk.core.utils.LocaleSetting
 import io.github.huskydg.magisk.core.utils.MediaStoreUtils
@@ -286,7 +288,7 @@ object NetHunterMode : BaseSettingsItem.Toggle() {
             notifyPropertyChanged(BR.description)
             val message = if (value) CoreR.string.nethunter_toast_enabled.asText()
                          else CoreR.string.nethunter_toast_disabled.asText()
-            AppContext.toast(message, android.widget.Toast.LENGTH_SHORT)
+            AppContext.toast(message.getText(AppContext.resources), android.widget.Toast.LENGTH_SHORT)
         }
     
     val mismatch get() = value != Info.netHunterMode

@@ -3,6 +3,7 @@ package io.github.huskydg.magisk.ui.module
 import androidx.databinding.Bindable
 import io.github.huskydg.magisk.BR
 import io.github.huskydg.magisk.R
+import io.github.huskydg.magisk.core.R as CoreR
 import io.github.huskydg.magisk.core.Info
 import io.github.huskydg.magisk.core.model.module.LocalModule
 import io.github.huskydg.magisk.databinding.DiffItem

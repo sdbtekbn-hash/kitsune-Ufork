@@ -1,10 +1,10 @@
 package io.github.huskydg.magisk.ui.modulerepo
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import io.github.huskydg.magisk.R
-import io.github.huskydg.magisk.arch.BaseUIActivity
 
-class ModuleRepoActivity : BaseUIActivity() {
+class ModuleRepoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

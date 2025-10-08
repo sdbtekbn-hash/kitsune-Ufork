@@ -184,7 +184,7 @@ struct ZygiskModule {
     int getModuleDir() const;
     void setOption(zygisk::Option opt);
     static uint32_t getFlags();
-    void tryUnload() const;
+    bool tryUnload() const;
     void clearApi() { memset(&api, 0, sizeof(api)); }
 
     ZygiskModule(int id, void *handle, void *entry);

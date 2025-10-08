@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.huskydg.magisk.R
+import io.github.huskydg.magisk.core.R as CoreR
 import io.github.huskydg.magisk.arch.BaseFragment
 import io.github.huskydg.magisk.arch.viewModel
 import io.github.huskydg.magisk.databinding.FragmentModuleRepoBinding
@@ -38,7 +39,7 @@ class ModuleRepoFragment : BaseFragment<FragmentModuleRepoBinding>() {
 
     override fun onStart() {
         super.onStart()
-        activity?.setTitle(R.string.module_repo)
+        activity?.setTitle(CoreR.string.module_repo)
         viewModel.updateRepoNow()
     }
 }

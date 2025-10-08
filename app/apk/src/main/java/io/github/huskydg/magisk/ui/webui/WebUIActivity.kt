@@ -117,7 +117,6 @@ class WebUIActivity : AppCompatActivity() {
             allowUniversalAccessFromFileURLs = true
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             cacheMode = WebSettings.LOAD_DEFAULT
-            setAppCacheEnabled(true)
             databaseEnabled = true
             setGeolocationEnabled(false)
             setSupportZoom(true)
