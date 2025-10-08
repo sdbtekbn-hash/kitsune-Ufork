@@ -329,44 +329,6 @@ bool zygisk_enabled() {
 }
 
 // Missing function implementations that are referenced but not defined
-void restore_zygisk_prop() {
-    // Placeholder implementation
-}
-
-int switch_mnt_ns(int pid) {
-    // Placeholder implementation
-    return 0;
-}
-
-int app_request(const SuAppRequest& req) {
-    // Placeholder implementation
-    return 0;
-}
-
-void app_notify(const SuAppRequest& req, SuPolicy policy) {
-    // Placeholder implementation
-}
-
-void app_log(const SuAppRequest& req, SuPolicy policy, bool notify) {
-    // Placeholder implementation
-}
-
-void exec_root_shell(int client, int pid, SuRequest& req, MntNsMode mode) {
-    // Placeholder implementation
-}
-
-int get_manager_for_cxx(int user, rust::String& pkg, bool install) {
-    // Placeholder implementation
-    return -1;
-}
-
-void load_modules_su() {
-    // Placeholder implementation
-}
-
-void update_deny_flags(int uid, rust::Str process, uint32_t& flags) {
-    // Placeholder implementation
-}
 
 // Persist function implementations
 bool persist_set_prop(const char *name, const char *value) {
