@@ -15,7 +15,7 @@ abstract class Module : Comparable<Module> {
         protected set
 
     @Throws(NumberFormatException::class)
-    protected fun parseProps(props: List<String>) {
+    protected open fun parseProps(props: List<String>) {
         for (line in props) {
             val prop = line.split("=".toRegex(), 2).map { it.trim() }
             if (prop.size != 2)

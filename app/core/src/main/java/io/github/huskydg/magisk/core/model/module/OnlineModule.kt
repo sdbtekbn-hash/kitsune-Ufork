@@ -7,7 +7,7 @@ import androidx.room.TypeConverters
 import io.github.huskydg.magisk.core.model.RepoModuleInfo
 import io.github.huskydg.magisk.core.repository.NetworkService
 import io.github.huskydg.magisk.data.database.Converters
-import io.github.huskydg.magisk.di.ServiceLocator
+import io.github.huskydg.magisk.core.di.ServiceLocator
 import kotlinx.parcelize.Parcelize
 import java.text.DateFormat
 import java.util.*
@@ -55,6 +55,7 @@ data class OnlineModule(
         notes_url = info.notes_url
     )
 
+    val zipUrl get() = zip_url
     val lastUpdate get() = Date(last_update)
     val lastUpdateString: String get() = DATE_FORMAT.format(lastUpdate)
     val downloadFilename get() = "$name-$version($versionCode).zip".legalFilename()

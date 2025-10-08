@@ -22,8 +22,8 @@ data class LocalModule(
     override var name: String = ""
     override var version: String = ""
     override var versionCode: Int = -1
-    var author: String = ""
-    var description: String = ""
+    override var author: String = ""
+    override var description: String = ""
     var updateInfo: OnlineModule? = null
     var outdated = false
     private var updateUrl: String = ""
@@ -115,7 +115,7 @@ data class LocalModule(
         }
 
     @Throws(NumberFormatException::class)
-    private fun parseProps(props: List<String>) {
+    override fun parseProps(props: List<String>) {
         for (line in props) {
             val prop = line.split("=".toRegex(), 2).map { it.trim() }
             if (prop.size != 2)
@@ -170,7 +170,18 @@ data class LocalModule(
 
         try {
             val json = svc.fetchModuleJson(updateUrl)
-            updateInfo = OnlineModule(this, json)
+            updateInfo = OnlineModule(
+                id = id,
+                name = name,
+                author = author,
+                version = json.version,
+                versionCode = json.versionCode,
+                description = description,
+                last_update = System.currentTimeMillis(),
+                prop_url = updateUrl,
+                zip_url = json.zipUrl,
+                notes_url = json.changelog
+            )
             outdated = json.versionCode > versionCode
             return true
         } catch (e: IOException) {

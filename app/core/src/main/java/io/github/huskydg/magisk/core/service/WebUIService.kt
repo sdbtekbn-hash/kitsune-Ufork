@@ -187,8 +187,14 @@ class WebUIService : Service() {
                         .directory(moduleDir)
                         .start()
                     
-                    // Update session with process ID
-                    val updatedSession = session.copy(processId = process.pid())
+                    // Update session with process ID (use reflection for compatibility)
+                    val pid = try {
+                        val pidMethod = process.javaClass.getMethod("pid")
+                        pidMethod.invoke(process) as? Long
+                    } catch (e: Exception) {
+                        null
+                    }
+                    val updatedSession = session.copy(processId = pid)
                     activeSessions[session.sessionId] = updatedSession
                     
                     Log.d(TAG, "Started WebUI server for ${module.moduleId} on port ${module.webuiPort}")
