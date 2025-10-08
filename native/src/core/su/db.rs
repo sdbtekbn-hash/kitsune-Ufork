@@ -130,7 +130,7 @@ impl MagiskD {
 
         // Check SuList mode: only allow if app is in the allow list
         if granted {
-            let sulist_enabled = self.get_db_setting(DbEntryKey::SulistConfig).log().unwrap_or(0) != 0;
+            let sulist_enabled = self.get_db_setting(DbEntryKey::SulistConfig) != 0;
             if sulist_enabled {
                 // Get process name - try to read from /proc
                 let process_name = format!("/proc/{}/cmdline", uid);
