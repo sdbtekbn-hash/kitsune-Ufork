@@ -13,6 +13,6 @@ int getfilecon_at(int dirfd, const char *name, byte_data con);
 void setfilecon_at(int dirfd, const char *name, const char *con);
 
 bool selinux_enabled();
-void restorecon() noexcept;
+void restorecon();
 void restore_tmpcon();
 

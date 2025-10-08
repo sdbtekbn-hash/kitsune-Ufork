@@ -124,17 +124,6 @@ static set<string> get_users() {
 // Leave /proc fd opened as we're going to read from it repeatedly
 static DIR *procfp;
 
-void crawl_procfs(const std::function<bool(int)> &fn) {
-    rewinddir(procfp);
-    dirent *dp;
-    int pid;
-    while ((dp = readdir(procfp))) {
-        pid = parse_int(dp->d_name);
-        if (pid > 0 && !fn(pid))
-            break;
-    }
-}
-
 static inline bool str_eql(string_view a, string_view b) { return a == b; }
 
 
@@ -230,7 +219,7 @@ static bool add_hide_set(const char *pkg, const char *proc) {
     crawl_procfs([=](int pid) -> bool {
         struct stat st;
         char path[PATH_MAX];
-        snprintf(path, sizeof(path), "/proc/%d", pid);
+        ssprintf(path, sizeof(path), "/proc/%d", pid);
         if (stat(path, &st) == 0) {
             int app_id = to_app_id(st.st_uid);
             hide_abnormal_environment(pid);

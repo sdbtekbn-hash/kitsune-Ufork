@@ -114,8 +114,12 @@ uint32_t ZygiskModule::getFlags() {
     return g_ctx ? (g_ctx->info_flags & ~PRIVATE_MASK) : 0;
 }
 
-void ZygiskModule::tryUnload() const {
-    if (unload) dlclose(handle);
+bool ZygiskModule::tryUnload() const {
+    if (unload) {
+        dlclose(handle);
+        return true;
+    }
+    return false;
 }
 
 // -----------------------------------------------------------------

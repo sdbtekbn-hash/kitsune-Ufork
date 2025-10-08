@@ -108,7 +108,7 @@ int su_client_main(int argc, char *argv[]) {
             { nullptr, 0, nullptr, 0 },
     };
 
-    auto req = SuRequest::New();
+    auto req = create_su_request();
 
     for (int i = 0; i < argc; i++) {
         // Replace -cn and -z with -Z for backwards compatibility
@@ -214,7 +214,7 @@ int su_client_main(int argc, char *argv[]) {
     fd = connect_daemon(+RequestCode::SUPERUSER);
 
     // Send request
-    req.write_to_fd(fd);
+    su_request_write_to_fd(req, fd);
 
     // Wait for ack from daemon
     if (read_int(fd)) {
