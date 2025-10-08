@@ -41,6 +41,7 @@ mod zygisk;
 #[allow(clippy::needless_lifetimes)]
 #[cxx::bridge]
 mod ffi {
+    extern "C++" {
     #[repr(i32)]
     enum RequestCode {
         START_DAEMON,
@@ -197,6 +198,7 @@ mod ffi {
         fn app_notify(req: &SuAppRequest, policy: SuPolicy);
         fn app_log(req: &SuAppRequest, policy: SuPolicy, notify: bool);
         fn exec_root_shell(client: i32, pid: i32, req: &mut SuRequest, mode: MntNsMode);
+    }
 }
 
 #[cxx::bridge]
