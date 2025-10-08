@@ -183,7 +183,7 @@ mod ffi {
         fn solist_reset_counters(load: usize, unload: usize);
         fn zygisk_cleanup_with_jni(env: *mut ());
         fn register_plt_hook(symbol: *mut (), backup: *mut *mut ());
-        fn register_jni_hook(clz: *const std::ffi::c_char, method: *mut ());
+        fn register_jni_hook(clz: &str, method: *mut ());
         fn restore_plt_hooks();
         fn restore_jni_hooks(env: *mut ());
         fn reset_module_counters();
@@ -202,19 +202,21 @@ mod ffi {
 
 #[cxx::bridge]
 mod sqlite {
-    include!("include/sqlite.hpp");
+    extern "C++" {
+        include!("include/sqlite.hpp");
 
-    type sqlite3;
-    type DbValues;
-    type DbStatement;
+        type sqlite3;
+        type DbValues;
+        type DbStatement;
 
-    fn sqlite3_errstr(code: i32) -> *const c_char;
-    fn open_and_init_db() -> *mut sqlite3;
-    fn get_int(self: &DbValues, index: i32) -> i32;
-    #[cxx_name = "get_str"]
-    fn get_text(self: &DbValues, index: i32) -> &str;
-    fn bind_text(self: Pin<&mut DbStatement>, index: i32, val: &str) -> i32;
-    fn bind_int64(self: Pin<&mut DbStatement>, index: i32, val: i64) -> i32;
+        fn sqlite3_errstr(code: i32) -> *const c_char;
+        fn open_and_init_db() -> *mut sqlite3;
+        fn get_int(self: &DbValues, index: i32) -> i32;
+        #[cxx_name = "get_str"]
+        fn get_text(self: &DbValues, index: i32) -> &str;
+        fn bind_text(self: Pin<&mut DbStatement>, index: i32, val: &str) -> i32;
+        fn bind_int64(self: Pin<&mut DbStatement>, index: i32, val: i64) -> i32;
+    }
 }
 
 extern "Rust" {
