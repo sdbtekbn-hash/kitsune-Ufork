@@ -1,5 +1,5 @@
 use crate::consts::{MAGISK_FULL_VER, MAGISK_PROC_CON, MAIN_CONFIG, ROOTMNT, ROOTOVL, SECURE_DIR};
-use crate::db::Sqlite3;
+use crate::db::{Sqlite3, SqliteError};
 use crate::ffi::{
     DbEntryKey, ModuleInfo, RequestCode, check_key_combo, disable_modules, exec_common_scripts,
     exec_module_scripts, get_magisk_tmp, init_nethunter_mode, initialize_denylist, setup_magisk_env,
@@ -95,6 +95,49 @@ impl MagiskD {
         } else {
             cstr!("/data/user")
         }
+    }
+
+    pub fn handle_modules(&self) -> Vec<ModuleInfo> {
+        let zygisk = self.zygisk_enabled();
+        crate::ffi::prepare_modules();
+        let initial_modules = crate::ffi::collect_modules(zygisk, false);
+        crate::ffi::exec_module_scripts(cstr!("post-fs-data"), &initial_modules);
+        // Recollect modules (module scripts could remove itself)
+        let modules = crate::ffi::collect_modules(zygisk, true);
+        crate::ffi::load_modules(zygisk, &modules);
+        modules
+    }
+
+    pub fn get_db_setting(&self, key: DbEntryKey) -> i32 {
+        if let Some(db) = self.sql_connection.lock().unwrap().as_ref() {
+            db.get_db_setting(key)
+        } else {
+            0
+        }
+    }
+
+    pub fn set_db_setting(&self, key: DbEntryKey, value: i32) -> Result<(), SqliteError> {
+        if let Some(db) = self.sql_connection.lock().unwrap().as_ref() {
+            db.set_db_setting(key, value)
+        } else {
+            Err(SqliteError(-1)) // Database not open error
+        }
+    }
+
+    fn preserve_stub_apk(&self) {
+        // TODO: Implement stub APK preservation logic
+    }
+
+    fn prune_su_access(&self) {
+        // TODO: Implement SU access pruning logic
+    }
+
+    fn ensure_manager(&self) {
+        // TODO: Implement manager APK installation logic
+    }
+
+    fn zygisk_reset(&self, _restart: bool) {
+        // TODO: Implement zygisk reset logic
     }
 
     fn post_fs_data(&self) -> bool {

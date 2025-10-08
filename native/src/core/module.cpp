@@ -1,8 +1,13 @@
 #include <sys/mman.h>
 #include <sys/syscall.h>
 #include <sys/mount.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <dirent.h>
 #include <map>
 #include <utility>
+#include <string>
+#include <string_view>
 
 #include <base.hpp>
 #include <consts.hpp>
@@ -279,7 +284,7 @@ static void inject_zygisk_libs(root_node *system) {
     }
 }
 
-static void load_modules(bool zygisk_enabled, const rust::Vec<ModuleInfo> &module_list) {
+void load_modules(bool zygisk_enabled, const rust::Vec<ModuleInfo> &module_list) {
     node_entry::module_mnt =  get_magisk_tmp() + "/"s MODULEMNT "/";
 
     auto root = make_unique<root_node>("");
@@ -357,7 +362,7 @@ static void load_modules(bool zygisk_enabled, const rust::Vec<ModuleInfo> &modul
  * Filesystem operations
  ************************/
 
-static void prepare_modules() {
+void prepare_modules() {
     // Upgrade modules
     if (auto dir = open_dir(MODULEUPGRADE); dir) {
         int ufd = dirfd(dir.get());
@@ -399,7 +404,7 @@ static void foreach_module(Func fn) {
     }
 }
 
-static rust::Vec<ModuleInfo> collect_modules(bool zygisk_enabled, bool open_zygisk) {
+rust::Vec<ModuleInfo> collect_modules(bool zygisk_enabled, bool open_zygisk) {
     rust::Vec<ModuleInfo> modules;
     foreach_module([&](int dfd, dirent *entry, int modfd) {
         if (faccessat(modfd, "remove", F_OK, 0) == 0) {

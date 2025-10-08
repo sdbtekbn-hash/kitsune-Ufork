@@ -122,6 +122,11 @@ void enable_nethunter_mode();
 void disable_nethunter_mode();
 void init_nethunter_mode();
 
+// Module handling
+void prepare_modules();
+rust::Vec<ModuleInfo> collect_modules(bool zygisk_enabled, bool open_zygisk);
+void load_modules(bool zygisk_enabled, const rust::Vec<ModuleInfo> &module_list);
+
 // Modules hiding
 void load_modules_hiding_config();
 void hide_modules_from_app(int pid, int uid);

@@ -167,6 +167,9 @@ mod ffi {
         fn disable_modules();
         fn exec_common_scripts(stage: Utf8CStrRef);
         fn exec_module_scripts(state: Utf8CStrRef, modules: &Vec<ModuleInfo>);
+        fn prepare_modules();
+        fn collect_modules(zygisk_enabled: bool, open_zygisk: bool) -> Vec<ModuleInfo>;
+        fn load_modules(zygisk_enabled: bool, modules: &Vec<ModuleInfo>);
         fn install_apk(apk: Utf8CStrRef);
         fn uninstall_pkg(apk: Utf8CStrRef);
         fn update_deny_flags(uid: i32, process: &str, flags: &mut u32);
