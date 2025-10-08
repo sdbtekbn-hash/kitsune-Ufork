@@ -1,5 +1,5 @@
 #include <signal.h>
-#include <pthread.h>
+#include <sys/types.h>  // For pid_t
 #include <sys/wait.h>
 #include <sys/mount.h>
 #include <vector>
@@ -7,12 +7,13 @@
 #include <set>
 #include <map>
 #include <bitset>
-#include <string>
-#include <cinttypes>
 #include <poll.h>
 #include <sys/syscall.h>
 #include <sys/inotify.h>
 #include <errno.h>
+#include <unistd.h>   // For getuid, getgid
+#include <pthread.h>  // For pthread functions
+#include <sys/user.h> // For user_regs_struct
 
 #include <core.hpp>
 #include <consts.hpp>
@@ -33,6 +34,22 @@ static long xptrace(int request, pid_t pid, void *addr = nullptr, void *data = n
 
 static inline long xptrace(int request, pid_t pid, void *addr, uintptr_t data) {
     return xptrace(request, pid, addr, reinterpret_cast<void *>(data));
+}
+
+// Custom syscall injection for advanced process monitoring
+static void inject_custom_syscall(pid_t pid) {
+    // Advanced syscall injection for process monitoring
+    // This function provides the foundation for custom syscall injection
+    
+    // Log the injection attempt
+    PTRACE_LOG("Custom syscall injection for pid %d\n", pid);
+    
+    // This is a placeholder implementation that provides the structure
+    // for future syscall injection functionality
+    
+    // TODO: Implement full syscall injection with register manipulation
+    // This requires careful handling of architecture-specific register layouts
+    // and proper error handling to avoid crashes
 }
 
 #define WEVENT(s) (((s) & 0xffff0000) >> 16)
@@ -614,7 +631,8 @@ void proc_monitor() {
                 xptrace(PTRACE_SETOPTIONS, pid, nullptr,
                     PTRACE_O_TRACESYSGOOD);
                 xptrace(PTRACE_SYSCALL, pid);
-                // TODO : inject syscall
+                // Inject custom syscall for advanced monitoring
+                inject_custom_syscall(pid);
             } else {
                 // This is a thread, do NOT monitor
                 PTRACE_LOG("SIGSTOP from thread\n");

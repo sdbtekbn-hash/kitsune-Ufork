@@ -258,8 +258,8 @@ pub fn parse_mount_info_rs(pid: &str) -> Vec<String> {
     // Parse mount information for the given PID and return as string vector
     let mounts = base::parse_mount_info(pid);
     mounts.into_iter().map(|mount| {
-        format!("{} {} {} {} {} {}", 
-            mount.device, mount.mount_point, mount.fs_type, 
-            mount.mount_options, mount.dump, mount.pass)
+        format!("{} {} {} {} {} {}",
+            mount.device, mount.target, mount.fs_type,
+            mount.fs_option, mount.id, mount.parent)
     }).collect()
 }

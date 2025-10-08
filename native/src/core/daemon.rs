@@ -108,13 +108,6 @@ impl MagiskD {
         modules
     }
 
-    pub fn get_manager_for_cxx(&self, user: i32, pkg: &mut String, install: bool) -> i32 {
-        let mut info = self.manager_info.lock().unwrap();
-        let (uid, pkg_str) = info.get_manager(self, user, install);
-        *pkg = pkg_str.to_string();
-        uid
-    }
-
     fn post_fs_data(&self) -> bool {
         setup_logfile();
         info!("** post-fs-data mode running");
