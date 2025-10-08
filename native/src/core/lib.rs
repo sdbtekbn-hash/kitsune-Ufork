@@ -181,101 +181,104 @@ pub mod ffi {
     fn init_seccomp_hiding();
     fn init_ptrace_hiding();
     fn solist_reset_counters(load: usize, unload: usize);
-    fn zygisk_cleanup_with_jni(env: *mut std::ffi::c_void);
-    fn register_plt_hook(symbol: *mut std::ffi::c_void, backup: *mut *mut std::ffi::c_void);
-    fn register_jni_hook(clz: *const std::ffi::c_char, method: *mut std::ffi::c_void);
+    fn zygisk_cleanup_with_jni(env: *mut ());
+    fn register_plt_hook(symbol: *mut (), backup: *mut *mut ());
+    fn register_jni_hook(clz: *const std::ffi::c_char, method: *mut ());
     fn restore_plt_hooks();
-    fn restore_jni_hooks(env: *mut std::ffi::c_void);
+    fn restore_jni_hooks(env: *mut ());
     fn reset_module_counters();
     fn send_seccomp_event();
     fn trace_zygote(pid: i32) -> bool;
     fn cleanup_ptrace();
     fn is_ptrace_active() -> bool;
-        fn restore_zygisk_prop();
-        fn switch_mnt_ns(pid: i32) -> i32;
-        fn app_request(req: &SuAppRequest) -> i32;
-        fn app_notify(req: &SuAppRequest, policy: SuPolicy);
-        fn app_log(req: &SuAppRequest, policy: SuPolicy, notify: bool);
-        fn exec_root_shell(client: i32, pid: i32, req: &mut SuRequest, mode: MntNsMode);
+    fn restore_zygisk_prop();
+    fn switch_mnt_ns(pid: i32) -> i32;
+    fn app_request(req: &SuAppRequest) -> i32;
+    fn app_notify(req: &SuAppRequest, policy: SuPolicy);
+    fn app_log(req: &SuAppRequest, policy: SuPolicy, notify: bool);
+    fn exec_root_shell(client: i32, pid: i32, req: &mut SuRequest, mode: MntNsMode);
+}
 
-        include!("include/sqlite.hpp");
+#[cxx::bridge]
+mod sqlite {
+    include!("include/sqlite.hpp");
 
-        type sqlite3;
-        type DbValues;
-        type DbStatement;
+    type sqlite3;
+    type DbValues;
+    type DbStatement;
 
-        fn sqlite3_errstr(code: i32) -> *const c_char;
-        fn open_and_init_db() -> *mut sqlite3;
-        fn get_int(self: &DbValues, index: i32) -> i32;
-        #[cxx_name = "get_str"]
-        fn get_text(self: &DbValues, index: i32) -> &str;
-        fn bind_text(self: Pin<&mut DbStatement>, index: i32, val: &str) -> i32;
-        fn bind_int64(self: Pin<&mut DbStatement>, index: i32, val: i64) -> i32;
-    }
+    fn sqlite3_errstr(code: i32) -> *const c_char;
+    fn open_and_init_db() -> *mut sqlite3;
+    fn get_int(self: &DbValues, index: i32) -> i32;
+    #[cxx_name = "get_str"]
+    fn get_text(self: &DbValues, index: i32) -> &str;
+    fn bind_text(self: Pin<&mut DbStatement>, index: i32, val: &str) -> i32;
+    fn bind_int64(self: Pin<&mut DbStatement>, index: i32, val: i64) -> i32;
+}
 
-    extern "Rust" {
-        fn android_logging();
-        fn zygisk_logging();
-        fn zygisk_close_logd();
-        fn zygisk_get_logd() -> i32;
-        fn setup_logfile();
-        fn find_preinit_device() -> String;
-        fn zygisk_should_load_module(flags: u32) -> bool;
-        unsafe fn persist_get_prop(name: Utf8CStrRef, prop_cb: Pin<&mut PropCb>);
-        unsafe fn persist_get_props(prop_cb: Pin<&mut PropCb>);
-        unsafe fn persist_delete_prop(name: Utf8CStrRef) -> bool;
-        unsafe fn persist_set_prop(name: Utf8CStrRef, value: Utf8CStrRef) -> bool;
-        fn send_fd(socket: i32, fd: i32) -> bool;
-        fn send_fds(socket: i32, fds: &[i32]) -> bool;
-        fn recv_fd(socket: i32) -> i32;
-        fn recv_fds(socket: i32) -> Vec<i32>;
-        unsafe fn write_to_fd(self: &SuRequest, fd: i32);
-        fn pump_tty(infd: i32, outfd: i32);
-        fn get_pty_num(fd: i32) -> i32;
-        fn restore_stdin() -> bool;
-        fn restorecon();
-        fn lgetfilecon(path: Utf8CStrRef, con: &mut [u8]) -> bool;
-        fn setfilecon(path: Utf8CStrRef, con: Utf8CStrRef) -> bool;
-        fn lsetfilecon(path: Utf8CStrRef, con: Utf8CStrRef) -> bool;
+extern "Rust" {
+    fn android_logging();
+    fn zygisk_logging();
+    fn zygisk_close_logd();
+    fn zygisk_get_logd() -> i32;
+    fn setup_logfile();
+    fn find_preinit_device() -> String;
+    fn zygisk_should_load_module(flags: u32) -> bool;
+    unsafe fn persist_get_prop(name: Utf8CStrRef, prop_cb: Pin<&mut PropCb>);
+    unsafe fn persist_get_props(prop_cb: Pin<&mut PropCb>);
+    unsafe fn persist_delete_prop(name: Utf8CStrRef) -> bool;
+    unsafe fn persist_set_prop(name: Utf8CStrRef, value: Utf8CStrRef) -> bool;
+    fn send_fd(socket: i32, fd: i32) -> bool;
+    fn send_fds(socket: i32, fds: &[i32]) -> bool;
+    fn recv_fd(socket: i32) -> i32;
+    fn recv_fds(socket: i32) -> Vec<i32>;
+    unsafe fn write_to_fd(self: &SuRequest, fd: i32);
+    fn pump_tty(infd: i32, outfd: i32);
+    fn get_pty_num(fd: i32) -> i32;
+    fn restore_stdin() -> bool;
+    fn restorecon();
+    fn lgetfilecon(path: Utf8CStrRef, con: &mut [u8]) -> bool;
+    fn setfilecon(path: Utf8CStrRef, con: Utf8CStrRef) -> bool;
+    fn lsetfilecon(path: Utf8CStrRef, con: Utf8CStrRef) -> bool;
 
-        #[namespace = "rust"]
-        fn daemon_entry();
-    }
+    #[namespace = "rust"]
+    fn daemon_entry();
+}
 
-    // Default constructors
-    extern "Rust" {
-        #[Self = SuRequest]
-        #[cxx_name = "New"]
-        fn default() -> SuRequest;
-    }
+// Default constructors
+extern "Rust" {
+    #[Self = SuRequest]
+    #[cxx_name = "New"]
+    fn default() -> SuRequest;
+}
 
-    // FFI for MagiskD
-    extern "Rust" {
-        type MagiskD;
-        fn reboot(&self);
-        fn sdk_int(&self) -> i32;
-        fn zygisk_enabled(&self) -> bool;
-        fn boot_stage_handler(&self, client: i32, code: i32);
-        fn zygisk_handler(&self, client: i32);
-        fn zygisk_reset(&self, restore: bool);
-        fn prune_su_access(&self);
-        fn su_daemon_handler(&self, client: i32, cred: &UCred);
-        #[cxx_name = "get_manager"]
-        unsafe fn get_manager_for_cxx(&self, user: i32, ptr: *mut CxxString, install: bool) -> i32;
+// FFI for MagiskD
+extern "Rust" {
+    type MagiskD;
+    fn reboot(&self);
+    fn sdk_int(&self) -> i32;
+    fn zygisk_enabled(&self) -> bool;
+    fn boot_stage_handler(&self, client: i32, code: i32);
+    fn zygisk_handler(&self, client: i32);
+    fn zygisk_reset(&self, restore: bool);
+    fn prune_su_access(&self);
+    fn su_daemon_handler(&self, client: i32, cred: &UCred);
+    #[cxx_name = "get_manager"]
+    unsafe fn get_manager_for_cxx(&self, user: i32, ptr: *mut CxxString, install: bool) -> i32;
 
-        fn get_db_setting(&self, key: DbEntryKey) -> i32;
-        #[cxx_name = "set_db_setting"]
-        fn set_db_setting_for_cxx(&self, key: DbEntryKey, value: i32) -> bool;
-        #[cxx_name = "db_exec"]
-        fn db_exec_for_cxx(&self, client_fd: i32);
+    fn get_db_setting(&self, key: DbEntryKey) -> i32;
+    #[cxx_name = "set_db_setting"]
+    fn set_db_setting_for_cxx(&self, key: DbEntryKey, value: i32) -> bool;
+    #[cxx_name = "db_exec"]
+    fn db_exec_for_cxx(&self, client_fd: i32);
 
-        #[Self = MagiskD]
-        #[cxx_name = "Get"]
-        fn get() -> &'static MagiskD;
-    }
-    unsafe extern "C++" {
-        fn handle_modules(self: &MagiskD) -> Vec<ModuleInfo>;
-    }
+    #[Self = MagiskD]
+    #[cxx_name = "Get"]
+    fn get() -> &'static MagiskD;
+}
+
+unsafe extern "C++" {
+    fn handle_modules(self: &MagiskD) -> Vec<ModuleInfo>;
 }
 
 #[repr(transparent)]
