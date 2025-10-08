@@ -163,6 +163,12 @@
     <string name="nethunter_toast_enabled">NetHunter Mode enabled. Reboot required.</string>
     <string name="nethunter_toast_disabled">NetHunter Mode disabled. Reboot required.</string>
     <string name="settings_sulist_error_magiskhide">This feature need MagiskHide to be enabled</string>
+    <string name="settings_modules_hiding_title">Hide Magisk Modules</string>
+    <string name="settings_modules_hiding_summary">Hide /data/adb/modules from selected apps</string>
+    <string name="settings_modules_filter_title">Filter Modules per App</string>
+    <string name="settings_modules_filter_summary">Select which modules to hide for each app</string>
+    <string name="settings_modules_config_title">Configure Modules Hiding</string>
+    <string name="settings_modules_config_summary">Select apps and modules to hide</string>
     <string name="settings_hosts_title">Systemless hosts</string>
     <string name="settings_hosts_summary">Systemless hosts support for ad blocking apps</string>
     <string name="settings_hosts_toast">Added systemless hosts module</string>

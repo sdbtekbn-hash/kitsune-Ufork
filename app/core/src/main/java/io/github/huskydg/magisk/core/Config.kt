@@ -27,6 +27,8 @@ object Config : PreferenceConfig, DBConfig {
         const val KEYSTORE = "keystore"
         const val SULIST = "sulist"
         const val NETHUNTER_MODE = "nethunter_mode"
+        const val MODULES_HIDING = "modules_hiding"
+        const val MODULES_FILTER = "modules_filter"
 
         // prefs
         const val SU_REQUEST_TIMEOUT = "su_request_timeout"
@@ -109,6 +111,8 @@ object Config : PreferenceConfig, DBConfig {
     var bootloop by dbSettings(Key.BOOTLOOP, 0)
     var sulist by dbSettings(Key.SULIST, false)
     var netHunterMode by dbSettings(Key.NETHUNTER_MODE, false)
+    var modulesHiding by dbSettings(Key.MODULES_HIDING, false)
+    var modulesFilter by dbSettings(Key.MODULES_FILTER, false)
 
     var safetyNotice by preference(Key.SAFETY, true)
     var darkTheme by preference(Key.DARK_THEME, -1)

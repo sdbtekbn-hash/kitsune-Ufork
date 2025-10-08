@@ -31,6 +31,7 @@ object Info {
     var noDataExec = false
     var patchBootVbmeta = false
     var sulist = false
+    var netHunterMode = false
 
     @JvmStatic var env = Env()
         private set
@@ -109,6 +110,7 @@ object Info {
         slot = getVar("SLOT")
         legacySAR = getBool("LEGACYSAR")
         sulist = getBool("SULISTMODE")
+        netHunterMode = getBool("NETHUNTERMODE")
 
         // Default presets
         Config.recovery = getBool("RECOVERYMODE")

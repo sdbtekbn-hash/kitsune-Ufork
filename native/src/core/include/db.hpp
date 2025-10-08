@@ -42,6 +42,8 @@ constexpr const char *DB_SETTING_KEYS[] = {
     "magiskhide",
     "sulist",
     "nethunter_mode",
+    "modules_hiding",
+    "modules_filter",
     "zygisk"
 };
 
@@ -54,6 +56,8 @@ enum {
     DENYLIST_CONFIG,
     SULIST_CONFIG,
     NETHUNTER_MODE_CONFIG,
+    MODULES_HIDING_CONFIG,
+    MODULES_FILTER_CONFIG,
     ZYGISK_CONFIG
 };
 

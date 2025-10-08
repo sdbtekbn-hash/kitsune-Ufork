@@ -226,6 +226,19 @@ static bool add_hide_set(const char *pkg, const char *proc) {
     LOGI("%s add: [%s/%s]\n", table_name, pkg, proc);
     if (!do_kill)
         return true;
+    
+    crawl_procfs([=](int pid) -> bool {
+        struct stat st;
+        char path[PATH_MAX];
+        snprintf(path, sizeof(path), "/proc/%d", pid);
+        if (stat(path, &st) == 0) {
+            int app_id = to_app_id(st.st_uid);
+            hide_abnormal_environment(pid);
+            hide_modules_from_app(pid, st.st_uid);
+        }
+        return true;
+    });
+    
     if (str_eql(pkg, ISOLATED_MAGIC)) {
         // Kill all matching isolated processes
         kill_process<&proc_name_match<str_starts>>(proc, true);

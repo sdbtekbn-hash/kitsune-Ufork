@@ -61,11 +61,13 @@ class SettingsViewModel : BaseViewModel(), BaseSettingsItem.Handler {
         if (Info.env.isActive) {
             list.addAll(listOf(
                 Magisk,
-                SystemlessHosts
+                SystemlessHosts,
+                NetHunterMode
             ))
             if (Const.Version.atLeast_24_0()) {
                 list.addAll(listOf(Zygisk, DenyList, SuList, DenyListConfig))
             }
+            list.addAll(listOf(ModulesHiding, ModulesFilter))
         }
 
         // Superuser

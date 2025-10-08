@@ -121,6 +121,50 @@ void initialize_denylist();
 void enable_nethunter_mode();
 void disable_nethunter_mode();
 void init_nethunter_mode();
+
+// Modules hiding
+void load_modules_hiding_config();
+void hide_modules_from_app(int pid, int uid);
+void init_modules_hiding();
+bool should_hide_module(int uid, const char *module_name);
+
+// Environment cleaning
+void clean_environment_variables();
+void spoof_selinux_context(int pid);
+void hide_abnormal_environment(int pid);
+
+// Mount cleaning
+void unmount_magisk_paths(int pid);
+void clean_mount_namespace(int pid);
+void enhance_magic_mount_hiding(int pid);
+
+// Zygisk hiding
+void clean_zygisk_memory_traces();
+void unload_zygisk_libraries();
+void hide_zygisk_injection();
+void zygisk_cleanup_post_specialize();
+void zygisk_cleanup_with_jni(JNIEnv *env);
+void register_plt_hook(void *symbol, void **backup);
+void register_jni_hook(const string &clz, const JNINativeMethod &method);
+void restore_plt_hooks();
+void restore_jni_hooks(JNIEnv *env);
+void reset_module_counters();
+
+// Seccomp hiding
+void send_seccomp_event();
+void init_seccomp_hiding();
+
+// SOList hiding
+bool solist_init();
+bool solist_drop_so_path(void *lib_memory, bool unload);
+void solist_reset_counters(size_t load, size_t unload);
+void init_solist_hiding();
+
+// Ptrace hiding
+bool trace_zygote(int pid);
+void cleanup_ptrace();
+bool is_ptrace_active();
+void init_ptrace_hiding();
 void scan_deny_apps();
 bool is_deny_target(int uid, std::string_view process, int max_len = 0);
 void crawl_procfs(const std::function<bool(int)> &fn);

@@ -253,10 +253,13 @@ void revert_unmount(int pid) noexcept {
         lazy_unmount(s.data());
     targets.clear();
 
-    // Unmount early-mount.d files
     for (auto &info: parse_mount_info("self")) {
-        if (info.source == EARLYMNTNAME) { // bind mount from early-mount
+        if (info.source == EARLYMNTNAME) {
             lazy_unmount(info.target.data());
         }
+    }
+    
+    if (pid > 0) {
+        enhance_magic_mount_hiding(pid);
     }
 }

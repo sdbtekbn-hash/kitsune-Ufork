@@ -172,9 +172,25 @@ pub mod ffi {
         fn update_deny_flags(uid: i32, process: &str, flags: &mut u32);
         fn is_deny_target(uid: i32, process: &str, max_len: i32) -> bool;
         fn initialize_denylist();
-        fn init_nethunter_mode();
-        fn enable_nethunter_mode();
-        fn disable_nethunter_mode();
+    fn init_nethunter_mode();
+    fn enable_nethunter_mode();
+    fn disable_nethunter_mode();
+    
+    // ReZygisk Integration
+    fn init_solist_hiding();
+    fn init_seccomp_hiding();
+    fn init_ptrace_hiding();
+    fn solist_reset_counters(load: usize, unload: usize);
+    fn zygisk_cleanup_with_jni(env: *mut std::ffi::c_void);
+    fn register_plt_hook(symbol: *mut std::ffi::c_void, backup: *mut *mut std::ffi::c_void);
+    fn register_jni_hook(clz: *const std::ffi::c_char, method: *mut std::ffi::c_void);
+    fn restore_plt_hooks();
+    fn restore_jni_hooks(env: *mut std::ffi::c_void);
+    fn reset_module_counters();
+    fn send_seccomp_event();
+    fn trace_zygote(pid: i32) -> bool;
+    fn cleanup_ptrace();
+    fn is_ptrace_active() -> bool;
         fn restore_zygisk_prop();
         fn switch_mnt_ns(pid: i32) -> i32;
         fn app_request(req: &SuAppRequest) -> i32;

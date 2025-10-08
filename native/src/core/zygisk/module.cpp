@@ -373,14 +373,22 @@ void ZygiskContext::run_modules_pre(rust::Vec<int> &fds) {
 
 void ZygiskContext::run_modules_post() {
     flags |= POST_SPECIALIZE;
+    size_t unloaded_count = 0;
+    
     for (const auto &m : modules) {
         if (flags & APP_SPECIALIZE) {
             m.postAppSpecialize(args.app);
         } else if (flags & SERVER_FORK_AND_SPECIALIZE) {
             m.postServerSpecialize(args.server);
         }
-        m.tryUnload();
+        
+        if (m.tryUnload()) {
+            unloaded_count++;
+        }
     }
+    
+    // ReZygisk-style SOList hiding with correct counts
+    solist_reset_counters(modules.size(), unloaded_count);
 }
 
 void ZygiskContext::app_specialize_pre() {

@@ -273,6 +273,41 @@ object SuList : BaseSettingsItem.Toggle() {
     val mismatch get() = value != Info.sulist
 }
 
+object NetHunterMode : BaseSettingsItem.Toggle() {
+    override val title = CoreR.string.settings_nethunter_mode_title.asText()
+    override val description get() =
+        if (mismatch) CoreR.string.reboot_apply_change.asText()
+        else CoreR.string.settings_nethunter_mode_summary.asText()
+    
+    override var value
+        get() = Config.netHunterMode
+        set(value) {
+            Config.netHunterMode = value
+            notifyPropertyChanged(BR.description)
+            val message = if (value) CoreR.string.nethunter_toast_enabled.asText()
+                         else CoreR.string.nethunter_toast_disabled.asText()
+            AppContext.toast(message, android.widget.Toast.LENGTH_SHORT)
+        }
+    
+    val mismatch get() = value != Info.netHunterMode
+}
+
+object ModulesHiding : BaseSettingsItem.Toggle() {
+    override val title = CoreR.string.settings_modules_hiding_title.asText()
+    override val description = CoreR.string.settings_modules_hiding_summary.asText()
+    override var value by Config::modulesHiding
+}
+
+object ModulesFilter : BaseSettingsItem.Toggle() {
+    override val title = CoreR.string.settings_modules_filter_title.asText()
+    override val description = CoreR.string.settings_modules_filter_summary.asText()
+    override var value by Config::modulesFilter
+    
+    override fun refresh() {
+        isEnabled = Config.modulesHiding
+    }
+}
+
 object DenyListConfig : BaseSettingsItem.Blank() {
     var status = Shell.cmd("magisk magiskhide sulist").exec().isSuccess;
 
