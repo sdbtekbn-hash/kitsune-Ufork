@@ -3,7 +3,8 @@ use crate::daemon::{
 };
 use crate::db::DbArg::Integer;
 use crate::db::{MultiuserMode, RootAccess, SqlTable, SqliteResult, SqliteReturn};
-use crate::ffi::{DbEntryKey, DbValues, SuPolicy, is_deny_target};
+use crate::ffi::{DbEntryKey, SuPolicy, is_deny_target};
+use crate::sqlite::DbValues;
 use base::ResultExt;
 
 impl Default for SuPolicy {

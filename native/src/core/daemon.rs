@@ -3,6 +3,7 @@ use crate::db::Sqlite3;
 use crate::ffi::{
     DbEntryKey, ModuleInfo, RequestCode, check_key_combo, disable_modules, exec_common_scripts,
     exec_module_scripts, get_magisk_tmp, init_nethunter_mode, initialize_denylist, setup_magisk_env,
+    init_solist_hiding, init_seccomp_hiding, init_ptrace_hiding,
 };
 use crate::logging::{magisk_logging, setup_logfile, start_log_daemon};
 use crate::mount::{clean_mounts, setup_module_mount, setup_preinit_dir};

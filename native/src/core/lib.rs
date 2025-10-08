@@ -224,26 +224,6 @@ unsafe extern "Rust" {
     fn default() -> SuRequest;
 }
 
-// FFI for MagiskD
-unsafe extern "Rust" {
-    type MagiskD;
-    fn reboot(&self);
-    fn sdk_int(&self) -> i32;
-    fn zygisk_enabled(&self) -> bool;
-    fn boot_stage_handler(&self, client: i32, code: i32);
-    fn zygisk_handler(&self, client: i32);
-    fn zygisk_reset(&self, restore: bool);
-    fn prune_su_access(&self);
-    fn su_daemon_handler(&self, client: i32, cred: &UCred);
-    #[cxx_name = "get_manager"]
-    unsafe fn get_manager_for_cxx(&self, user: i32, ptr: *mut CxxString, install: bool) -> i32;
-    fn get_db_setting(&self, key: DbEntryKey) -> i32;
-    #[cxx_name = "set_db_setting"]
-    fn set_db_setting_for_cxx(&self, key: DbEntryKey, value: i32) -> bool;
-    #[cxx_name = "db_exec"]
-    fn db_exec_for_cxx(&self, client_fd: i32);
-
-    fn get() -> &'static MagiskD;
 }
 
 #[repr(transparent)]

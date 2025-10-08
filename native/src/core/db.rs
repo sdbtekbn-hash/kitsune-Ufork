@@ -1,7 +1,10 @@
 #![allow(improper_ctypes, improper_ctypes_definitions)]
 use crate::daemon::{MAGISKD, MagiskD};
 use crate::ffi::{
-    DbEntryKey, DbStatement, DbValues, MntNsMode, open_and_init_db, sqlite3, sqlite3_errstr,
+    DbEntryKey, MntNsMode,
+};
+use crate::sqlite::{
+    DbStatement, DbValues, open_and_init_db, sqlite3, sqlite3_errstr,
 };
 use crate::socket::{IpcRead, IpcWrite};
 use DbArg::{Integer, Text};
