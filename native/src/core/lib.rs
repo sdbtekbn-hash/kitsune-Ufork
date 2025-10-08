@@ -246,8 +246,6 @@ unsafe extern "Rust" {
     fn get() -> &'static MagiskD;
 }
 
-}
-
 #[repr(transparent)]
 pub struct UCred(pub libc::ucred);
 
