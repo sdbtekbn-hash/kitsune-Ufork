@@ -181,11 +181,11 @@ mod ffi {
         fn init_seccomp_hiding();
         fn init_ptrace_hiding();
         fn solist_reset_counters(load: usize, unload: usize);
-        unsafe fn zygisk_cleanup_with_jni(env: *mut c_void);
-        unsafe fn register_plt_hook(symbol: *mut c_void, backup: *mut *mut c_void);
-        unsafe fn register_jni_hook(clz: &str, method: *mut c_void);
+        unsafe fn zygisk_cleanup_with_jni(env: *mut u8);
+        unsafe fn register_plt_hook(symbol: *mut u8, backup: *mut *mut u8);
+        unsafe fn register_jni_hook(clz: &str, method: *mut u8);
         fn restore_plt_hooks();
-        unsafe fn restore_jni_hooks(env: *mut c_void);
+        unsafe fn restore_jni_hooks(env: *mut u8);
         fn reset_module_counters();
         fn send_seccomp_event();
         fn trace_zygote(pid: i32) -> bool;
