@@ -1,5 +1,5 @@
 use crate::consts::{MAGISK_FULL_VER, MAGISK_PROC_CON, MAIN_CONFIG, ROOTMNT, ROOTOVL, SECURE_DIR};
-use crate::db::{Sqlite3, SqliteError, SqliteReturn};
+use crate::db::Sqlite3;
 use crate::ffi::{
     DbEntryKey, ModuleInfo, RequestCode, check_key_combo, disable_modules, exec_common_scripts,
     exec_module_scripts, get_magisk_tmp, init_nethunter_mode, initialize_denylist, setup_magisk_env,
@@ -108,36 +108,11 @@ impl MagiskD {
         modules
     }
 
-    pub fn get_db_setting(&self, key: DbEntryKey) -> i32 {
-        if let Some(db) = self.sql_connection.lock().unwrap().as_ref() {
-            db.get_db_setting(key)
-        } else {
-            0
-        }
-    }
-
-    pub fn set_db_setting(&self, key: DbEntryKey, value: i32) -> Result<(), SqliteError> {
-        if let Some(db) = self.sql_connection.lock().unwrap().as_ref() {
-            db.set_db_setting(key, value)
-        } else {
-            (-1).sql_result()
-        }
-    }
-
-    fn preserve_stub_apk(&self) {
-        // TODO: Implement stub APK preservation logic
-    }
-
-    fn prune_su_access(&self) {
-        // TODO: Implement SU access pruning logic
-    }
-
-    fn ensure_manager(&self) {
-        // TODO: Implement manager APK installation logic
-    }
-
-    fn zygisk_reset(&self, _restart: bool) {
-        // TODO: Implement zygisk reset logic
+    pub fn get_manager_for_cxx(&self, user: i32, pkg: &mut String, install: bool) -> i32 {
+        let mut info = self.manager_info.lock().unwrap();
+        let (uid, pkg_str) = info.get_manager(self, user, install);
+        *pkg = pkg_str.to_string();
+        uid
     }
 
     fn post_fs_data(&self) -> bool {

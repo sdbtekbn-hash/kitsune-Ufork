@@ -8,11 +8,11 @@ use num_traits::AsPrimitive;
 use base::libc::{c_uint, dev_t};
 use base::{
     FsPathBuilder, LibcReturn, LoggedResult, MountInfo, ResultExt, Utf8CStr, Utf8CStrBuf, cstr,
-    debug, info, libc, parse_mount_info, warn,
+    info, libc, parse_mount_info, warn,
 };
 
 use crate::consts::{MODULEMNT, MODULEROOT, PREINITDEV, PREINITMIRR, WORKERDIR};
-use crate::ffi::{get_magisk_tmp, resolve_preinit_dir, switch_mnt_ns};
+use crate::ffi::{get_magisk_tmp, resolve_preinit_dir};
 use crate::get_prop;
 
 pub fn setup_preinit_dir() {

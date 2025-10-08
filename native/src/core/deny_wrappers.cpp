@@ -1,4 +1,6 @@
 #include <sys/mount.h>
+#include <string>
+#include <vector>
 #include <core.hpp>
 #include <base.hpp>
 #include <consts.hpp>
@@ -19,19 +21,31 @@ int tmpfs_mount(const char *from, const char *to) {
 }
 
 void su_mount() {
-    // Placeholder - calls Rust implementation through FFI
+    // Call Rust implementation through FFI
+    load_modules_su();
 }
 
 int get_manager(int user_id, string *pkg, bool install) {
-    // Simple implementation - just return -1 for now
-    return -1;
+    if (!pkg) return -1;
+    
+    // Call Rust implementation through FFI
+    string rust_pkg;
+    int uid = get_manager_for_cxx(user_id, rust_pkg, install);
+    
+    if (uid >= 0) {
+        *pkg = rust_pkg;
+    }
+    
+    return uid;
 }
 
 // Wrapper for parse_mount_info - calls Rust implementation
-vector<mount_info> parse_mount_info(const char *pid) {
-    // Return empty vector for now
-    // The Rust implementation exists but we need FFI bridge
-    return vector<mount_info>();
+vector<string> parse_mount_info(const char *pid) {
+    if (!pid) return vector<string>();
+    
+    // Call Rust implementation through FFI
+    string pid_str(pid);
+    return parse_mount_info_rs(pid_str);
 }
 
 // SELinux wrappers - these are defined in Rust via FFI

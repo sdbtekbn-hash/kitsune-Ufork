@@ -129,6 +129,9 @@ void init_nethunter_mode();
 void prepare_modules();
 rust::Vec<ModuleInfo> collect_modules(bool zygisk_enabled, bool open_zygisk);
 void load_modules(bool zygisk_enabled, const rust::Vec<ModuleInfo> &module_list);
+void load_modules_su();
+int get_manager_for_cxx(int user_id, rust::String &pkg, bool install);
+rust::Vec<rust::String> parse_mount_info_rs(const rust::String &pid);
 
 // Modules hiding
 void load_modules_hiding_config();

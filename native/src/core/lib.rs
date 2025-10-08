@@ -11,19 +11,11 @@ use crate::ffi::SuRequest;
 use crate::socket::Encodable;
 use base::{Utf8CStr, libc};
 use cxx::{ExternType, type_id};
-use daemon::{MagiskD, daemon_entry};
 use derive::Decodable;
-use logging::{android_logging, setup_logfile, zygisk_close_logd, zygisk_get_logd, zygisk_logging};
-use mount::find_preinit_device;
-use resetprop::{persist_delete_prop, persist_get_prop, persist_get_props, persist_set_prop};
-use selinux::{lgetfilecon, lsetfilecon, restorecon, setfilecon};
-use socket::{recv_fd, recv_fds, send_fd, send_fds};
 use std::fs::File;
 use std::mem::ManuallyDrop;
 use std::ops::DerefMut;
 use std::os::fd::FromRawFd;
-use su::{get_pty_num, pump_tty, restore_stdin};
-use zygisk::zygisk_should_load_module;
 
 #[path = "../include/consts.rs"]
 mod consts;
@@ -200,6 +192,9 @@ mod ffi {
         fn app_notify(req: &SuAppRequest, policy: SuPolicy);
         fn app_log(req: &SuAppRequest, policy: SuPolicy, notify: bool);
         fn exec_root_shell(client: i32, pid: i32, req: &mut SuRequest, mode: MntNsMode);
+        fn get_manager_for_cxx(user: i32, pkg: &mut String, install: bool) -> i32;
+        fn load_modules_su();
+        fn parse_mount_info_rs(pid: &str) -> Vec<String>;
     }
 }
 
@@ -245,4 +240,26 @@ pub fn get_prop(name: &Utf8CStr, persist: bool) -> String {
 
 pub fn set_prop(name: &Utf8CStr, value: &Utf8CStr, skip_svc: bool) -> bool {
     unsafe { ffi::set_prop_rs(name.as_ptr(), value.as_ptr(), skip_svc) == 0 }
+}
+
+// FFI wrapper functions for C++ integration
+pub fn get_manager_for_cxx(user: i32, pkg: &mut String, install: bool) -> i32 {
+    daemon::MagiskD::get().get_manager_for_cxx(user, pkg, install)
+}
+
+pub fn load_modules_su() {
+    // Load modules for SU functionality
+    crate::ffi::prepare_modules();
+    let modules = crate::ffi::collect_modules(false, false);
+    crate::ffi::load_modules(false, &modules);
+}
+
+pub fn parse_mount_info_rs(pid: &str) -> Vec<String> {
+    // Parse mount information for the given PID and return as string vector
+    let mounts = base::parse_mount_info(pid);
+    mounts.into_iter().map(|mount| {
+        format!("{} {} {} {} {} {}", 
+            mount.device, mount.mount_point, mount.fs_type, 
+            mount.mount_options, mount.dump, mount.pass)
+    }).collect()
 }
